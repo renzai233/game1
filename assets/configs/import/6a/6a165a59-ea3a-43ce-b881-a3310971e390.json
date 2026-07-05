@@ -1,0 +1,1 @@
+[1,0,0,[["cc.JsonAsset",["_name","json"],1]],[[0,0,1,3]],[[0,"skill_effect_type",[{"id":1,"key":"DAMAGE","name":"damage","desc":"伤害"},{"id":2,"key":"HEAL","name":"heal","desc":"治疗"},{"id":3,"key":"CONTROL","name":"control","desc":"控制"},{"id":4,"key":"POSITION","name":"position","desc":"位移"}]]],0,0,[],[],[]]
