@@ -35,9 +35,18 @@
   <!--<link rel="apple-touch-icon-precomposed" href=".png" />-->
 
   <link rel="stylesheet" type="text/css" href="style.css"/>
+  <link rel="icon" href="data:,">
 
 </head>
 <body>
+  <div id="first-screen-loader" aria-hidden="true">
+    <div class="first-screen-loader__core">
+      <div class="first-screen-loader__crystal"></div>
+      <div class="first-screen-loader__track">
+        <div class="first-screen-loader__fill"></div>
+      </div>
+    </div>
+  </div>
   <div id="GameDiv" cc_exact_fit_screen="true">
       <div id="Cocos3dGameContainer">
         <canvas id="GameCanvas" oncontextmenu="event.preventDefault()" tabindex="99"></canvas>

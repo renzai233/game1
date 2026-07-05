@@ -53,6 +53,80 @@ canvas {
   height: 100%;
 }
 
+#first-screen-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 50% 36%, rgba(74, 232, 255, 0.16), transparent 22%),
+    linear-gradient(180deg, #03070f 0%, #07051d 48%, #02040b 100%);
+  opacity: 1;
+  transition: opacity 420ms ease;
+}
+
+#first-screen-loader.is-hiding {
+  pointer-events: none;
+  opacity: 0;
+}
+
+.first-screen-loader__core {
+  width: min(72vw, 520px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.first-screen-loader__crystal {
+  width: 82px;
+  height: 82px;
+  transform: rotate(45deg);
+  border: 2px solid rgba(85, 233, 255, 0.88);
+  background:
+    linear-gradient(135deg, rgba(110, 48, 204, 0.88), rgba(32, 220, 255, 0.72)),
+    rgba(19, 20, 54, 0.9);
+  box-shadow:
+    0 0 28px rgba(73, 223, 255, 0.46),
+    inset 0 0 20px rgba(255, 255, 255, 0.18);
+}
+
+.first-screen-loader__track {
+  position: relative;
+  width: 100%;
+  height: 28px;
+  overflow: hidden;
+  border: 2px solid rgba(73, 230, 255, 0.86);
+  border-radius: 999px;
+  background: rgba(4, 9, 28, 0.92);
+  box-shadow:
+    0 0 20px rgba(54, 224, 255, 0.36),
+    inset 0 0 14px rgba(115, 65, 220, 0.54);
+}
+
+.first-screen-loader__fill {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 4px;
+  width: 52%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #3feaff, #8248ff 52%, #f15cff);
+  box-shadow: 0 0 18px rgba(102, 232, 255, 0.86);
+  animation: first-screen-loader-flow 1.25s ease-in-out infinite;
+}
+
+@keyframes first-screen-loader-flow {
+  0% {
+    transform: translateX(-58%);
+  }
+  100% {
+    transform: translateX(198%);
+  }
+}
+
 :root {
   --safe-top: env(safe-area-inset-top);
   --safe-right: env(safe-area-inset-right);
