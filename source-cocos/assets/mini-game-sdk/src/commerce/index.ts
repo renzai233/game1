@@ -1,0 +1,77 @@
+import {
+  defineModuleBoundary,
+  type ModuleBoundary,
+} from "../core/module-boundary";
+
+export const COMMERCE_MODULE_BOUNDARY: ModuleBoundary = defineModuleBoundary({
+  name: "commerce",
+  targetStage: "Stage 3",
+  implemented: true,
+  owns: [
+    "Commerce public service contract and root SDK wiring",
+    "Reward, spend, claim, ledger, and idempotency public protocol boundary",
+    "Pure reducer helpers for resource bundle validation, canAfford, grant, spend, ledger deltas, and reducer-level command replay",
+    "Profile-backed sdk.commerce persistence, SDK-owned writer integration, persisted command replay, and bounded local CAS retry",
+    "Claim opportunity upsert, claim definition hash, claimed tombstone retention, current-state replay, and commerce public EventBus emission",
+    "Structured disabled, unavailable, and destroyed commerce behavior",
+  ],
+  nonGoals: [
+    "No telemetry default auto-collection for commerce events",
+    "No operations activity, monetization purchase validation, platform ads/share direct call, or server-authoritative economy implementation",
+  ],
+});
+
+export type {
+  CanAffordInput,
+  CanAffordMissingResource,
+  CanAffordOutput,
+  ActiveClaimOpportunity,
+  ClaimOpportunity,
+  ClaimOpportunityBase,
+  ClaimOpportunityInput,
+  ClaimOpportunityAppliedOutput,
+  ClaimOpportunityOutput,
+  ClaimOpportunityReplayedOutput,
+  ClaimOpportunityStatus,
+  ClaimTombstoneRetentionKind,
+  ClaimTombstoneRetentionPolicy,
+  ClaimedClaimOpportunityTombstone,
+  CycleClaimTombstoneRetentionPolicy,
+  EphemeralClaimTombstoneRetentionPolicy,
+  PermanentClaimTombstoneRetentionPolicy,
+  CommerceCommandMeta,
+  CommerceCommandReceipt,
+  CommerceCommandResultKind,
+  CommerceCommandType,
+  CommerceLedgerEntry,
+  CommerceModuleConfig,
+  CommerceMutationAppliedOutput,
+  CommerceMutationOutput,
+  CommerceMutationReplayedOutput,
+  CommerceResourceDelta,
+  CommerceResourceDomain,
+  CommerceRuntimeSnapshot,
+  CommerceRuntimeStatus,
+  CommerceService,
+  CommerceState,
+  GrantRewardInput,
+  RewardBundle,
+  SpendBundle,
+  SpendBundleInput,
+  UpsertClaimOpportunityAppliedOutput,
+  UpsertClaimOpportunityInput,
+  UpsertClaimOpportunityOutput,
+  UpsertClaimOpportunityReplayedOutput,
+} from "./types";
+export {
+  COMMERCE_MODULE_ID,
+  CURRENT_COMMERCE_SCHEMA_VERSION,
+  DEFAULT_COMMERCE_CLAIMED_TOMBSTONE_RETENTION_LIMIT,
+  DEFAULT_COMMERCE_CYCLE_CLAIMED_TOMBSTONE_RETENTION_LIMIT,
+  DEFAULT_COMMERCE_COMMAND_RECEIPT_RETENTION_LIMIT,
+  DEFAULT_COMMERCE_EPHEMERAL_CLAIMED_TOMBSTONE_RETENTION_LIMIT,
+  DEFAULT_COMMERCE_INACTIVE_CLAIM_OPPORTUNITY_RETENTION_LIMIT,
+  DEFAULT_COMMERCE_LEDGER_RETENTION_LIMIT,
+} from "./types";
+export type { CreateDisabledCommerceServiceOptions } from "./disabled-service";
+export { createDisabledCommerceService } from "./disabled-service";

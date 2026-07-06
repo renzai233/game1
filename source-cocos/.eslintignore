@@ -1,0 +1,5 @@
+library/
+temp/
+node_modules/
+build/
+assets/**/*.meta 

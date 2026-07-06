@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "key": "UNIT_TYPE_ROLE",
+    "name": "role",
+    "parent_key": null
+  },
+  {
+    "id": 2,
+    "key": "UNIT_TYPE_SKILL",
+    "name": "skill",
+    "parent_key": null
+  },
+  {
+    "id": 3,
+    "key": "UNIT_TYPE_BUILD",
+    "name": "build",
+    "parent_key": null
+  },
+  {
+    "id": 4,
+    "key": "UNIT_TYPE_MONSTER",
+    "name": "monster",
+    "parent_key": "UNIT_TYPE_ROLE"
+  },
+  {
+    "id": 5,
+    "key": "UNIT_TYPE_HERO",
+    "name": "hero",
+    "parent_key": "UNIT_TYPE_ROLE"
+  },
+  {
+    "id": 6,
+    "key": "UNIT_TYPE_PET",
+    "name": "pet",
+    "parent_key": "UNIT_TYPE_ROLE"
+  },
+  {
+    "id": 7,
+    "key": "UNIT_TYPE_WALL",
+    "name": "wall",
+    "parent_key": "UNIT_TYPE_BUILD"
+  },
+  {
+    "id": 8,
+    "key": "UNIT_TYPE_TOWER",
+    "name": "tower",
+    "parent_key": "UNIT_TYPE_BUILD"
+  }
+]

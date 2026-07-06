@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "icon": "icon/res/coin02",
+    "rewards": [{ "type": "gold", "amount": 200 }],
+    "claims": [0, 1]
+  },
+  {
+    "id": 2,
+    "icon": "icon/res/res-gem01",
+    "rewards": [{ "type": "gem", "amount": 100 }],
+    "claims": [0, 1]
+  },
+  {
+    "id": 3,
+    "icon": "icon/res/res-gem01",
+    "rewards": [{ "type": "gem", "amount": 200 }],
+    "claims": [1, 1]
+  },
+  {
+    "id": 4,
+    "icon": "icon/res/coin02",
+    "rewards": [{ "type": "gold", "amount": 500 }],
+    "claims": [0, 1]
+  },
+  {
+    "id": 5,
+    "icon": "hero/serra/portrait",
+    "rewards": [{ "type": "heroFragment", "amount": 50, "heroId": 3 }],
+    "claims": [1, 1]
+  },
+  {
+    "id": 6,
+    "icon": "icon/res/res-gem01",
+    "rewards": [{ "type": "gem", "amount": 300 }],
+    "claims": [0, 1]
+  },
+  {
+    "id": 7,
+    "icon": "icon/res/coin02",
+    "rewards": [{ "type": "gold", "amount": 1000 }],
+    "claims": [1, 1]
+  },
+  {
+    "id": 8,
+    "icon": "icon/res/res-gem01",
+    "rewards": [{ "type": "gem", "amount": 400 }],
+    "claims": [0, 1]
+  },
+  {
+    "id": 9,
+    "icon": "hero/serra/portrait",
+    "rewards": [{ "type": "heroFragment", "amount": 50, "heroId": 3 }],
+    "claims": [1, 1]
+  },
+  {
+    "id": 10,
+    "icon": "icon/res/res-gem01",
+    "rewards": [{ "type": "gem", "amount": 500 }],
+    "claims": [0, 1]
+  }
+]

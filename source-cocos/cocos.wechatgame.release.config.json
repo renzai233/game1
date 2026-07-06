@@ -1,0 +1,50 @@
+{
+  "$schema": "./temp/cli/cocos.config.schema.json",
+  "platform": "wechatgame",
+  "outputName": "wechatgame",
+  "buildPath": "project://build",
+  "debug": false,
+  "sourceMaps": false,
+  "md5Cache": false,
+  "skipCompressTexture": false,
+  "mangleProperties": true,
+  "mainBundleCompressionType": "merge_dep",
+  "useSplashScreen": false,
+  "startScene": "eb229794-ce9e-4056-be2f-9ee13f3c2734",
+  "scenes": [
+    {
+      "url": "db://assets/scene/Splash.scene",
+      "uuid": "eb229794-ce9e-4056-be2f-9ee13f3c2734"
+    },
+    {
+      "url": "db://assets/scene/Home.scene",
+      "uuid": "fcc3130c-6023-4fb6-b347-112f974fd9f3"
+    },
+    {
+      "url": "db://assets/scene/Game.scene",
+      "uuid": "8cac8045-07ee-424f-b398-da99d5564c08"
+    }
+  ],
+  "packages": {
+    "wechatgame": {
+      "orientation": "portrait",
+      "appid": "wx0000000000000000",
+      "buildOpenDataContextTemplate": false
+    }
+  },
+  "polyfills": {
+    "asyncFunctions": true
+  },
+  "overwriteProjectSettings": {
+    "includeModules": {
+      "gfx-webgl2": "off",
+      "profiler": "off",
+      "webview": "off",
+      "physics": "inherit-project-setting",
+      "physics-2d": "inherit-project-setting"
+    },
+    "macroConfig": {
+      "cleanupImageCache": "inherit-project-setting"
+    }
+  }
+}

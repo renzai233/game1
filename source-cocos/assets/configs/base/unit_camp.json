@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "key": "UNIT_CAMP_HUMAN",
+    "name": "human"
+  },
+  {
+    "id": 2,
+    "key": "UNIT_CAMP_DEMON",
+    "name": "demon"
+  },
+  {
+    "id": 3,
+    "key": "UNIT_CAMP_NATURE",
+    "name": "nature"
+  }
+]

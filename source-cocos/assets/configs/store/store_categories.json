@@ -1,0 +1,64 @@
+{
+  "storeCategories": [
+    {
+      "id": "currency",
+      "name": "货币补给",
+      "icon": "textures/icon/res/coin/spriteFrame",
+      "sortOrder": 1,
+      "items": [
+        1,
+        2
+      ],
+      "description": "晶核防线 货币补给"
+    },
+    {
+      "id": "consumables",
+      "name": "战斗消耗",
+      "icon": "textures/icon/res/stamina/spriteFrame",
+      "sortOrder": 2,
+      "items": [
+        3,
+        7
+      ],
+      "description": "晶核防线 战斗消耗"
+    },
+    {
+      "id": "gacha",
+      "name": "守卫招募",
+      "icon": "textures/hero/default/portrait/spriteFrame",
+      "sortOrder": 3,
+      "items": [
+        4
+      ],
+      "description": "晶核防线 守卫招募"
+    },
+    {
+      "id": "bundles",
+      "name": "晶核礼包",
+      "icon": "textures/icon/res/gift/spriteFrame",
+      "sortOrder": 4,
+      "items": [
+        5
+      ],
+      "description": "晶核防线 晶核礼包"
+    },
+    {
+      "id": "subscriptions",
+      "name": "长期通行证",
+      "icon": "textures/icon/res/diamond/spriteFrame",
+      "sortOrder": 5,
+      "items": [
+        6
+      ],
+      "description": "晶核防线 长期通行证"
+    },
+    {
+      "id": "special",
+      "name": "限时特惠",
+      "icon": "textures/icon/res/treasure/spriteFrame",
+      "sortOrder": 6,
+      "items": [],
+      "description": "晶核防线 限时特惠"
+    }
+  ]
+}

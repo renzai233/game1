@@ -1,0 +1,109 @@
+{
+  "hero": {
+    "warrior": {
+      "iron_guard": "铁甲守卫",
+      "iron_guard.desc": "身披重甲的战士，拥有强大的防御力和生命值",
+      "iron_guard.story": "来自钢铁要塞的守卫，经过严格的训练，能够承受巨大的伤害",
+      "shadow_blade": "影刃",
+      "shadow_blade.desc": "擅长潜行和暗杀的战士，拥有极高的攻击力",
+      "shadow_blade.story": "行走在阴影中的战士，没有人知道他的真实身份",
+      "dragon_knight": "龙骑士",
+      "dragon_knight.desc": "骑乘巨龙的骑士，拥有强大的战斗能力",
+      "dragon_knight.story": "与巨龙签订契约的骑士，获得了龙族的力量",
+      "berserker": "狂战士",
+      "berserker.desc": "战斗时进入狂暴状态，攻击力大幅提升",
+      "berserker.story": "失去理智的战士，在战斗中变得异常凶猛"
+    },
+    "mage": {
+      "fire_master": "火焰大师",
+      "fire_master.desc": "掌控火焰的法师，能够释放强大的火系魔法",
+      "fire_master.story": "从火焰中诞生的法师，能够操控世间所有的火焰",
+      "ice_sorcerer": "冰霜法师",
+      "ice_sorcerer.desc": "掌控冰霜的法师，能够冻结敌人",
+      "ice_sorcerer.story": "来自极寒之地的法师，能够将一切冻结成冰",
+      "void_mage": "虚空法师",
+      "void_mage.desc": "掌控虚空力量的法师，能够扭曲空间",
+      "void_mage.story": "来自虚空的神秘法师，能够操控空间的力量"
+    },
+    "archer": {
+      "wind_ranger": "风行者",
+      "wind_ranger.desc": "敏捷的弓箭手，能够快速移动和射击",
+      "wind_ranger.story": "与风为伴的弓箭手，箭矢如风般快速准确",
+      "thunder_bolt": "雷霆射手",
+      "thunder_bolt.desc": "能够发射雷电箭矢的弓箭手",
+      "thunder_bolt.story": "被雷电选中的弓箭手，箭矢带有强大的雷电之力",
+      "celestial_bow": "天界之弓",
+      "celestial_bow.desc": "来自天界的弓箭手，拥有神圣的力量",
+      "celestial_bow.story": "从天界降临的弓箭手，箭矢带有神圣的光芒"
+    }
+  },
+  "hero.panel": {
+    "title": "英雄面板",
+    "deployed": "已上阵",
+    "unlocked": "已获得",
+    "locked": "待解锁",
+    "upgrade": "升级",
+    "star_up": "升星",
+    "deploy": "上阵",
+    "undeploy": "下阵",
+    "detail": "详情",
+    "back": "返回",
+    "confirm": "确认",
+    "cancel": "取消"
+  },
+  "hero.detail": {
+    "level": "等级",
+    "star": "星级",
+    "exp": "经验",
+    "attributes": "属性",
+    "skills": "技能",
+    "story": "背景",
+    "hp": "生命值",
+    "attack": "攻击力",
+    "defense": "防御力",
+    "speed": "速度"
+  },
+  "hero.upgrade": {
+    "success": "升级成功",
+    "failed": "升级失败",
+    "insufficient_resources": "资源不足",
+    "max_level": "已达到最高等级"
+  },
+  "hero.star_up": {
+    "success": "升星成功",
+    "failed": "升星失败",
+    "insufficient_resources": "资源不足",
+    "max_star": "已达到最高星级"
+  },
+  "hero.deploy": {
+    "success": "上阵成功",
+    "failed": "上阵失败",
+    "position_full": "该位置已有英雄",
+    "hero_not_unlocked": "英雄未解锁"
+  },
+  "hero.unlock": {
+    "success": "解锁成功",
+    "failed": "解锁失败",
+    "insufficient_fragments": "碎片不足",
+    "condition_not_met": "解锁条件未满足"
+  },
+  "hero.tab": {
+    "all": "全部",
+    "warrior": "战士",
+    "mage": "法师",
+    "archer": "弓箭手"
+  },
+  "hero.rarity": {
+    "common": "普通",
+    "rare": "稀有",
+    "epic": "史诗",
+    "legendary": "传说",
+    "sr": "SR",
+    "ssr": "SSR"
+  },
+  "hero.status": {
+    "locked": "未解锁",
+    "unlocked": "已解锁",
+    "deployed": "已上阵"
+  }
+} 

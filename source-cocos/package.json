@@ -1,0 +1,23 @@
+{
+  "name": "game-skin-1-crystal-core-defense",
+  "type": "3d",
+  "version": "3.8.8",
+  "uuid": "3997582f-d0bf-49cd-8bdf-a9d2e036e45f",
+  "creator": {
+    "version": "3.8.8"
+  },
+  "description": "晶核防线 - 抽象几何霓虹 tower defense reskin",
+  "_sourceId": "e4a2dbd8-3066-44df-b42a-327ab53f044a",
+  "_storeId": "882d3cc8412a5dd0e0e566eca9dcf0ae",
+  "_skinSource": {
+    "folder": "游戏换皮1",
+    "texture": "Texture一",
+    "sourceProject": "happy_copy",
+    "style": "抽象几何霓虹"
+  },
+  "_standaloneDelivery": {
+    "nodeModulesRequired": false,
+    "externalRuntimeDependencies": [],
+    "invalidBuildHooksRemoved": true
+  }
+}

@@ -1,0 +1,35 @@
+module.exports = {
+    root: true,
+    env: {
+        browser: true,
+        node: true,
+        es2021: true,
+    },
+    parser: '@typescript-eslint/parser',
+    parserOptions: {
+        ecmaVersion: 2021,
+        sourceType: 'module',
+        project: './tsconfig.json',
+    },
+    plugins: ['@typescript-eslint', 'prettier'],
+    extends: [
+        'eslint:recommended',
+        'plugin:@typescript-eslint/recommended',
+        'plugin:prettier/recommended',
+    ],
+    rules: {
+        'prettier/prettier': 'error',
+        'quotes': ['error', 'single'],
+        'semi': ['error', 'always'],
+        'indent': ['error', 4],
+        'no-unused-vars': 'off',
+        '@typescript-eslint/no-unused-vars': ['warn'],
+        '@typescript-eslint/explicit-function-return-type': 'warn',
+        '@typescript-eslint/no-explicit-any': 'warn',
+        '@typescript-eslint/interface-name-prefix': 'off',
+        '@typescript-eslint/ban-ts-comment': 'off',
+        'no-console': 'warn',
+        'no-debugger': 'warn',
+    },
+    ignorePatterns: ['library/', 'temp/', 'node_modules/', 'build/', 'assets/**/*.meta'],
+}; 

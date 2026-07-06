@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "icon": "icon/res/coin02",
+    "rewards": [{ "type": "gold", "amount": 500 }]
+  },
+  {
+    "id": 2,
+    "icon": "hero/serra/portrait",
+    "rewards": [{ "type": "heroFragment", "amount": 50, "heroId": 3 }]
+  },
+  {
+    "id": 3,
+    "icon": "icon/res/res-gem01",
+    "rewards": [{ "type": "gem", "amount": 100 }]
+  },
+  {
+    "id": 4,
+    "icon": "icon/res/coin02",
+    "rewards": [{ "type": "gold", "amount": 2000 }]
+  },
+  {
+    "id": 5,
+    "icon": "icon/res/res-gem01",
+    "rewards": [{ "type": "gem", "amount": 200 }]
+  },
+  {
+    "id": 6,
+    "icon": "hero/serra/portrait",
+    "rewards": [{ "type": "heroFragment", "amount": 50, "heroId": 3 }]
+  },
+  {
+    "id": 7,
+    "icon": "icon/res/res-gem01",
+    "rewards": [{ "type": "gem", "amount": 500 }]
+  }
+]

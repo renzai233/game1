@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "key": "AUTO",
+    "name": "auto",
+    "desc": "自动释放"
+  },
+  {
+    "id": 2,
+    "key": "MANUAL",
+    "name": "manual",
+    "desc": "手动释放"
+  },
+  {
+    "id": 3,
+    "key": "PASSIVE",
+    "name": "passive",
+    "desc": "被动释放"
+  }
+]

@@ -1,0 +1,402 @@
+[
+  {
+    "id": 0,
+    "name": "默认配置关卡，不参与战斗",
+    "wave": 10,
+    "normal_ids": null,
+    "elite_id": null,
+    "boss_id": null,
+    "special_id": null,
+    "special_type": null,
+    "start_number": 5,
+    "wave_number_add": 2,
+    "wave_attr_ratio": 0.01,
+    "monster_gen_time": 0.5,
+    "intervalTime": 3,
+    "description": "晶核防线的默认模板关卡。"
+  },
+  {
+    "id": 1,
+    "name": "矩阵层1：校准原点",
+    "wave": 3,
+    "normal_ids": [
+      102,
+      116
+    ],
+    "elite_id": null,
+    "boss_id": null,
+    "special_id": null,
+    "special_type": null,
+    "start_number": 50,
+    "wave_number_add": 20,
+    "wave_attr_ratio": null,
+    "monster_gen_time": 0.5,
+    "intervalTime": 3,
+    "description": "守住校准原点，击退第1批侵蚀体。"
+  },
+  {
+    "id": 2,
+    "name": "矩阵层2：青棱入口",
+    "wave": 4,
+    "normal_ids": [
+      102,
+      117
+    ],
+    "elite_id": null,
+    "boss_id": null,
+    "special_id": null,
+    "special_type": null,
+    "start_number": 60,
+    "wave_number_add": 25,
+    "wave_attr_ratio": null,
+    "monster_gen_time": 0.5,
+    "intervalTime": 3,
+    "description": "守住青棱入口，击退第2批侵蚀体。"
+  },
+  {
+    "id": 3,
+    "name": "矩阵层3：折线走廊",
+    "wave": 5,
+    "normal_ids": [
+      103,
+      118
+    ],
+    "elite_id": 101,
+    "boss_id": null,
+    "special_id": null,
+    "special_type": null,
+    "start_number": 100,
+    "wave_number_add": 50,
+    "wave_attr_ratio": null,
+    "monster_gen_time": 0.2,
+    "intervalTime": 3,
+    "description": "守住折线走廊，击退第3批侵蚀体。"
+  },
+  {
+    "id": 4,
+    "name": "矩阵层4：偏振前哨",
+    "wave": 6,
+    "normal_ids": [
+      104,
+      119
+    ],
+    "elite_id": 102,
+    "boss_id": null,
+    "special_id": null,
+    "special_type": null,
+    "start_number": 80,
+    "wave_number_add": 10,
+    "wave_attr_ratio": null,
+    "monster_gen_time": 0.5,
+    "intervalTime": 3,
+    "description": "守住偏振前哨，击退第4批侵蚀体。"
+  },
+  {
+    "id": 5,
+    "name": "矩阵层5：脉冲穹顶",
+    "wave": 7,
+    "normal_ids": [
+      105,
+      120
+    ],
+    "elite_id": 103,
+    "boss_id": null,
+    "special_id": 105,
+    "special_type": "gold",
+    "start_number": 90,
+    "wave_number_add": 10,
+    "wave_attr_ratio": null,
+    "monster_gen_time": 0.5,
+    "intervalTime": 3,
+    "description": "守住脉冲穹顶，击退第5批侵蚀体。"
+  },
+  {
+    "id": 6,
+    "name": "矩阵层6：晶桥转角",
+    "wave": 8,
+    "normal_ids": [
+      106,
+      121
+    ],
+    "elite_id": 104,
+    "boss_id": null,
+    "special_id": null,
+    "special_type": null,
+    "start_number": 100,
+    "wave_number_add": 50,
+    "wave_attr_ratio": null,
+    "monster_gen_time": 0.5,
+    "intervalTime": 3,
+    "description": "守住晶桥转角，击退第6批侵蚀体。"
+  },
+  {
+    "id": 7,
+    "name": "矩阵层7：镜面回廊",
+    "wave": 9,
+    "normal_ids": [
+      107,
+      122
+    ],
+    "elite_id": 105,
+    "boss_id": null,
+    "special_id": null,
+    "special_type": null,
+    "start_number": 80,
+    "wave_number_add": 20,
+    "wave_attr_ratio": null,
+    "monster_gen_time": 0.5,
+    "intervalTime": 3,
+    "description": "守住镜面回廊，击退第7批侵蚀体。"
+  },
+  {
+    "id": 8,
+    "name": "矩阵层8：黑频节点",
+    "wave": 10,
+    "normal_ids": [
+      108,
+      123
+    ],
+    "elite_id": 106,
+    "boss_id": 118,
+    "special_id": null,
+    "special_type": null,
+    "start_number": 88,
+    "wave_number_add": 20,
+    "wave_attr_ratio": null,
+    "monster_gen_time": 0.5,
+    "intervalTime": 3,
+    "description": "守住黑频节点，击退第8批侵蚀体。"
+  },
+  {
+    "id": 9,
+    "name": "矩阵层9：噪点庭院",
+    "wave": 10,
+    "normal_ids": [
+      109,
+      124
+    ],
+    "elite_id": 107,
+    "boss_id": 119,
+    "special_id": null,
+    "special_type": null,
+    "start_number": 100,
+    "wave_number_add": 50,
+    "wave_attr_ratio": null,
+    "monster_gen_time": 0.5,
+    "intervalTime": 3,
+    "description": "守住噪点庭院，击退第9批侵蚀体。"
+  },
+  {
+    "id": 10,
+    "name": "矩阵层10：棱钻工坊",
+    "wave": 10,
+    "normal_ids": [
+      110,
+      108,
+      125
+    ],
+    "elite_id": 108,
+    "boss_id": 120,
+    "special_id": 108,
+    "special_type": "gem",
+    "start_number": 80,
+    "wave_number_add": 20,
+    "wave_attr_ratio": null,
+    "monster_gen_time": 0.5,
+    "intervalTime": 2,
+    "description": "守住棱钻工坊，击退第10批侵蚀体。"
+  },
+  {
+    "id": 11,
+    "name": "矩阵层11：回声裂口",
+    "wave": 10,
+    "normal_ids": [
+      111,
+      126
+    ],
+    "elite_id": 109,
+    "boss_id": 121,
+    "special_id": null,
+    "special_type": null,
+    "start_number": 88,
+    "wave_number_add": 30,
+    "wave_attr_ratio": null,
+    "monster_gen_time": 0.5,
+    "intervalTime": 2,
+    "description": "守住回声裂口，击退第11批侵蚀体。"
+  },
+  {
+    "id": 12,
+    "name": "矩阵层12：悬晶天台",
+    "wave": 10,
+    "normal_ids": [
+      112,
+      127
+    ],
+    "elite_id": 110,
+    "boss_id": 122,
+    "special_id": null,
+    "special_type": null,
+    "start_number": 100,
+    "wave_number_add": 50,
+    "wave_attr_ratio": null,
+    "monster_gen_time": 0.5,
+    "intervalTime": 2,
+    "description": "守住悬晶天台，击退第12批侵蚀体。"
+  },
+  {
+    "id": 13,
+    "name": "矩阵层13：幻晶深层",
+    "wave": 10,
+    "normal_ids": [
+      113,
+      128
+    ],
+    "elite_id": 111,
+    "boss_id": 123,
+    "special_id": null,
+    "special_type": null,
+    "start_number": 80,
+    "wave_number_add": 20,
+    "wave_attr_ratio": null,
+    "monster_gen_time": 0.5,
+    "intervalTime": 2,
+    "description": "守住幻晶深层，击退第13批侵蚀体。"
+  },
+  {
+    "id": 14,
+    "name": "矩阵层14：碎片矿道",
+    "wave": 10,
+    "normal_ids": [
+      114,
+      129
+    ],
+    "elite_id": 112,
+    "boss_id": 124,
+    "special_id": 109,
+    "special_type": "hero_fragment",
+    "start_number": 88,
+    "wave_number_add": 30,
+    "wave_attr_ratio": null,
+    "monster_gen_time": 0.5,
+    "intervalTime": 2,
+    "description": "守住碎片矿道，击退第14批侵蚀体。"
+  },
+  {
+    "id": 15,
+    "name": "矩阵层15：元火阵列",
+    "wave": 10,
+    "normal_ids": [
+      115,
+      130
+    ],
+    "elite_id": 113,
+    "boss_id": 125,
+    "special_id": null,
+    "special_type": null,
+    "start_number": 100,
+    "wave_number_add": 50,
+    "wave_attr_ratio": null,
+    "monster_gen_time": 0.5,
+    "intervalTime": 2,
+    "description": "守住元火阵列，击退第15批侵蚀体。"
+  },
+  {
+    "id": 16,
+    "name": "矩阵层16：元木缓存",
+    "wave": 10,
+    "normal_ids": [
+      108,
+      131
+    ],
+    "elite_id": 114,
+    "boss_id": 126,
+    "special_id": null,
+    "special_type": null,
+    "start_number": 80,
+    "wave_number_add": 20,
+    "wave_attr_ratio": null,
+    "monster_gen_time": 0.5,
+    "intervalTime": 2,
+    "description": "守住元木缓存，击退第16批侵蚀体。"
+  },
+  {
+    "id": 17,
+    "name": "矩阵层17：雨频栈道",
+    "wave": 10,
+    "normal_ids": [
+      109,
+      132
+    ],
+    "elite_id": 115,
+    "boss_id": 127,
+    "special_id": null,
+    "special_type": null,
+    "start_number": 88,
+    "wave_number_add": 30,
+    "wave_attr_ratio": null,
+    "monster_gen_time": 0.5,
+    "intervalTime": 2,
+    "description": "守住雨频栈道，击退第17批侵蚀体。"
+  },
+  {
+    "id": 18,
+    "name": "矩阵层18：云根核心",
+    "wave": 10,
+    "normal_ids": [
+      134,
+      134
+    ],
+    "elite_id": 116,
+    "boss_id": 128,
+    "special_id": null,
+    "special_type": null,
+    "start_number": 100,
+    "wave_number_add": 50,
+    "wave_attr_ratio": null,
+    "monster_gen_time": 0.5,
+    "intervalTime": 2,
+    "description": "守住云根核心，击退第18批侵蚀体。"
+  },
+  {
+    "id": 19,
+    "name": "矩阵层19：折返星环",
+    "wave": 10,
+    "normal_ids": [
+      108,
+      109
+    ],
+    "elite_id": 117,
+    "boss_id": 129,
+    "special_id": null,
+    "special_type": null,
+    "start_number": 100,
+    "wave_number_add": 50,
+    "wave_attr_ratio": null,
+    "monster_gen_time": 0.5,
+    "intervalTime": 2,
+    "description": "守住折返星环，击退第19批侵蚀体。"
+  },
+  {
+    "id": 20,
+    "name": "矩阵层20：终端晶塔",
+    "wave": 10,
+    "normal_ids": [
+      108,
+      132,
+      133,
+      134,
+      134
+    ],
+    "elite_id": 118,
+    "boss_id": 130,
+    "special_id": 110,
+    "special_type": "hero_fragment",
+    "start_number": 100,
+    "wave_number_add": 50,
+    "wave_attr_ratio": null,
+    "monster_gen_time": 0.5,
+    "intervalTime": 2,
+    "description": "守住终端晶塔，击退第20批侵蚀体。"
+  }
+]

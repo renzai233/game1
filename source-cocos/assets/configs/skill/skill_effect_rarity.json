@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "key": "COMMON",
+    "name": "common",
+    "desc": "通用技能",
+    "color": "#808080",
+    "color_desc": "中性灰色，辨识度低，符合基础品质"
+  },
+  {
+    "id": 2,
+    "key": "BASE",
+    "name": "base",
+    "desc": "基础技能",
+    "color": "#4CAF50",
+    "color_desc": "清新绿色，区分普通品质"
+  },
+  {
+    "id": 3,
+    "key": "NORMAL",
+    "name": "normal",
+    "desc": "普通技能",
+    "color": "#2196F3",
+    "color_desc": "经典蓝色，常规稀有品质代表色"
+  },
+  {
+    "id": 4,
+    "key": "ADVANCED",
+    "name": "advanced",
+    "desc": "进阶技能",
+    "color": "#9C27B0",
+    "color_desc": "高贵紫色，高于稀有品质"
+  },
+  {
+    "id": 5,
+    "key": "ULTIMATE",
+    "name": "ultimate",
+    "desc": "终极技能",
+    "color": "#E91E63",
+    "color_desc": "华贵洋红，凌驾于传说的终极品质"
+  }
+]

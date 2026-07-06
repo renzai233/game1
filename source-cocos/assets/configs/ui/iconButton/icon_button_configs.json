@@ -1,0 +1,58 @@
+{
+  "globalDefault": {
+    "enabled": true,
+    "bgSpritePath": "textures/icon/bg/icon-default-nbg/spriteFrame",
+    "iconSpritePath": "textures/icon/common/icon-game/spriteFrame",
+    "text": "Button",
+    "fontSize": 24,
+    "textColor": [
+      255,
+      255,
+      255
+    ],
+    "showText": true,
+    "showIcon": true,
+    "isUseAnimation": true,
+    "clickScaleRatio": 0.9,
+    "animationDuration": 0.1,
+    "isPlaySound": true,
+    "clickSoundPath": "audio/effect/coin",
+    "clickEventName": "default_click"
+  },
+  "buttonConfigs": [
+    {
+      "btnId": "start_game",
+      "enabled": false,
+      "bgSpritePath": "",
+      "iconSpritePath": "textures/icon/common/icon-mhandbook/spriteFrame",
+      "text": "Start Game",
+      "fontSize": 30,
+      "textColor": [
+        255,
+        0,
+        0
+      ],
+      "showText": true,
+      "showIcon": true,
+      "clickSoundPath": "",
+      "clickEventName": "start_game_click"
+    },
+    {
+      "btnId": "daily",
+      "enabled": true,
+      "bgSpritePath": "textures/icon/bg/icon-default-sbg/spriteFrame",
+      "iconSpritePath": "textures/icon/common/icon-sign/spriteFrame",
+      "text": "日常",
+      "showIcon": true,
+      "clickEventName": "daily_click"
+    },
+    {
+      "btnId": "settings",
+      "enabled": false,
+      "text": "Settings",
+      "showIcon": false,
+      "showText": true,
+      "clickSoundPath": "audios/buttons/shop_click"
+    }
+  ]
+}

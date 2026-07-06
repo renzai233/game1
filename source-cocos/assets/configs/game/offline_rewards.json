@@ -1,0 +1,17 @@
+[
+  {
+    "maxHoursPerDay": 12,
+    "fullRateHours": 8,
+    "tailHours": 4,
+    "tailMultiplier": 0.5,
+    "minClaimIntervalSeconds": 600,
+    "maxQuickPatrolPerDay": 5,
+    "efficiency": 1,
+    "allowedItemTypes": ["gold", "hero_fragment"],
+    "calcMode": "expected",
+    "calcRounding": "floor_with_chance",
+    "rarityWhitelist": ["C", "R", "L", "SSR"],
+    "rarityFold": { "UC": "C", "SR": "R", "M": "L" },
+    "fallbackOrder": ["L", "SSR", "R", "C"]
+  }
+]

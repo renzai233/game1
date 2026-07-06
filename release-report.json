@@ -1,0 +1,285 @@
+{
+  "source": "/Users/renzai/Desktop/Script/换皮/游戏换皮1",
+  "releaseRoot": "/Users/renzai/Desktop/Script/Game-Relese",
+  "directories": {
+    "source-cocos": {
+      "bytes": 105507965,
+      "human": "100.62 MiB",
+      "files": 2210
+    },
+    "cloudflare-web": {
+      "bytes": 29914541,
+      "human": "28.53 MiB",
+      "files": 1651
+    },
+    "wechat-build": {
+      "bytes": 29551939,
+      "human": "28.18 MiB",
+      "files": 1656
+    }
+  },
+  "builds": {
+    "webMobile": {
+      "ok": true,
+      "returnCode": 36,
+      "log": "/Users/renzai/Desktop/Script/Game-Relese/web-mobile-build.log"
+    },
+    "wechatgame": {
+      "ok": true,
+      "returnCode": 36,
+      "log": "/Users/renzai/Desktop/Script/Game-Relese/wechatgame-build.log"
+    }
+  },
+  "optimization": {
+    "sourceImages": {
+      "processed": 499,
+      "saved": 37714441,
+      "png_to_jpg": 32,
+      "png_optimize": 251,
+      "jpeg_recompress": 4,
+      "errors": 0
+    },
+    "sourceAudio": {
+      "converted": 2,
+      "saved": 4199439,
+      "kept": 7,
+      "errors": 0
+    },
+    "cloudflareImages": {
+      "processed": 558,
+      "saved": 89020503,
+      "png_to_jpg": 0,
+      "png_optimize": 490,
+      "jpeg_recompress": 36,
+      "errors": 0
+    },
+    "wechatImages": {
+      "processed": 560,
+      "saved": 89038269,
+      "png_to_jpg": 0,
+      "png_optimize": 492,
+      "jpeg_recompress": 36,
+      "errors": 0
+    },
+    "wechatImagesSecondPass": {
+      "processed": 560,
+      "saved": 89038269,
+      "png_to_jpg": 0,
+      "png_optimize": 492,
+      "jpeg_recompress": 36,
+      "errors": 0
+    },
+    "wechatRemovedTmpFiles": 0,
+    "wechatImagesFinalPass": {
+      "processed": 560,
+      "saved": 89038269,
+      "png_to_jpg": 0,
+      "png_optimize": 492,
+      "jpeg_recompress": 36,
+      "errors": 0
+    },
+    "wechatRemovedTmpFilesFinal": 0,
+    "sourceKeyJpegsFinal": {
+      "processed": 2,
+      "saved": 121266,
+      "missing": 0,
+      "errors": 0
+    },
+    "cloudflareKeyJpegsFinal": {
+      "processed": 2,
+      "saved": 111520,
+      "missing": 0,
+      "errors": 0
+    },
+    "wechatKeyJpegsFinal": {
+      "processed": 2,
+      "saved": 111520,
+      "missing": 0,
+      "errors": 0
+    },
+    "removedTmpFilesFinalAll": 19
+  },
+  "largestFiles": {
+    "source-cocos": [
+      {
+        "path": "assets/res/textures/ui/skin1/polish/home_logo.png",
+        "size": "1.69 MiB"
+      },
+      {
+        "path": "assets/res/textures/ui/skin1/polish/nav_crystal_dock.png",
+        "size": "1.68 MiB"
+      },
+      {
+        "path": "assets/entry/crystal_core_logo.png",
+        "size": "1.62 MiB"
+      },
+      {
+        "path": "assets/res/audio/bgm/game.m4a",
+        "size": "1.47 MiB"
+      },
+      {
+        "path": "assets/res/textures/monster/g16/attack.png",
+        "size": "962.48 KiB"
+      },
+      {
+        "path": "assets/res/textures/monster/g14/dead.png",
+        "size": "839.31 KiB"
+      },
+      {
+        "path": "assets/res/audio/bgm/home.m4a",
+        "size": "723.89 KiB"
+      },
+      {
+        "path": "assets/res/textures/monster/g14/walk.png",
+        "size": "715.99 KiB"
+      },
+      {
+        "path": "assets/res/textures/monster/g16/idle.png",
+        "size": "715.99 KiB"
+      },
+      {
+        "path": "assets/res/textures/monster/g16/walk.png",
+        "size": "715.99 KiB"
+      }
+    ],
+    "cloudflare-web": [
+      {
+        "path": "cocos-js/cc.js",
+        "size": "2.05 MiB"
+      },
+      {
+        "path": "assets/res/native/b7/b739bf45-09d4-4f1e-a259-53794a78645c.m4a",
+        "size": "1.47 MiB"
+      },
+      {
+        "path": "assets/main/index.js",
+        "size": "1.45 MiB"
+      },
+      {
+        "path": "assets/res/native/b4/b478b0df-4a88-4158-873a-4b220271897d.m4a",
+        "size": "723.89 KiB"
+      },
+      {
+        "path": "assets/res/native/37/37b0c005-bc59-4a6f-b376-684d4b7bb19f.png",
+        "size": "345.36 KiB"
+      },
+      {
+        "path": "assets/entry/native/5b/5bd9d779-37f9-4ba9-82d2-380c314d61c8.png",
+        "size": "322.71 KiB"
+      },
+      {
+        "path": "assets/res/native/31/310ab92f-e984-4289-8d45-0614eb1e0b8a.jpg",
+        "size": "208.34 KiB"
+      },
+      {
+        "path": "assets/res/native/98/98416175-a8b3-47f3-840c-64c7ffeec51c.jpg",
+        "size": "202.20 KiB"
+      },
+      {
+        "path": "assets/res/native/55/55a0531b-8dca-43f0-bd27-72c5fc29b6cb.png",
+        "size": "194.10 KiB"
+      },
+      {
+        "path": "assets/internal/import/0b/0b0f7a282.json",
+        "size": "179.40 KiB"
+      }
+    ],
+    "wechat-build": [
+      {
+        "path": "cocos-js/cc.js",
+        "size": "1.77 MiB"
+      },
+      {
+        "path": "subpackages/res/native/b7/b739bf45-09d4-4f1e-a259-53794a78645c.m4a",
+        "size": "1.47 MiB"
+      },
+      {
+        "path": "assets/main/index.js",
+        "size": "1.35 MiB"
+      },
+      {
+        "path": "subpackages/res/native/b4/b478b0df-4a88-4158-873a-4b220271897d.m4a",
+        "size": "723.89 KiB"
+      },
+      {
+        "path": "subpackages/res/native/37/37b0c005-bc59-4a6f-b376-684d4b7bb19f.png",
+        "size": "345.36 KiB"
+      },
+      {
+        "path": "subpackages/entry/native/5b/5bd9d779-37f9-4ba9-82d2-380c314d61c8.png",
+        "size": "322.71 KiB"
+      },
+      {
+        "path": "subpackages/res/native/31/310ab92f-e984-4289-8d45-0614eb1e0b8a.jpg",
+        "size": "208.34 KiB"
+      },
+      {
+        "path": "subpackages/res/native/98/98416175-a8b3-47f3-840c-64c7ffeec51c.jpg",
+        "size": "202.20 KiB"
+      },
+      {
+        "path": "subpackages/res/native/55/55a0531b-8dca-43f0-bd27-72c5fc29b6cb.png",
+        "size": "194.10 KiB"
+      },
+      {
+        "path": "subpackages/res/native/1b/1b9d68d0-6a86-42b0-b82b-745452159896.jpg",
+        "size": "171.30 KiB"
+      }
+    ]
+  },
+  "validation": {
+    "wechat": {
+      "mainPackageBytes": 4171613,
+      "mainPackageHuman": "3.98 MiB",
+      "mainPackageLimit": "4 MiB",
+      "mainPackagePass": true,
+      "totalBytes": 29551939,
+      "totalHuman": "28.18 MiB",
+      "totalLimit": "30 MiB",
+      "totalPass": true,
+      "subpackages": [
+        {
+          "path": "subpackages/resources",
+          "bytes": 5001,
+          "human": "4.88 KiB"
+        },
+        {
+          "path": "subpackages/configs",
+          "bytes": 135381,
+          "human": "132.21 KiB"
+        },
+        {
+          "path": "subpackages/entry",
+          "bytes": 332835,
+          "human": "325.03 KiB"
+        },
+        {
+          "path": "subpackages/prefabs",
+          "bytes": 613456,
+          "human": "599.08 KiB"
+        },
+        {
+          "path": "subpackages/res",
+          "bytes": 24293653,
+          "human": "23.17 MiB"
+        }
+      ]
+    },
+    "cloudflare": {
+      "fileCount": 1651,
+      "totalBytes": 29914541,
+      "totalHuman": "28.53 MiB",
+      "largestFile": "cocos-js/cc.js",
+      "largestFileBytes": 2148026,
+      "largestFileHuman": "2.05 MiB",
+      "pagesFreeFileCountLimit": 20000,
+      "singleFileLimit": "25 MiB",
+      "pass": true
+    },
+    "sourceClean": {
+      "generatedDirs": 0,
+      "junkFiles": 0,
+      "orphanMetas": 0
+    }
+  }
+}

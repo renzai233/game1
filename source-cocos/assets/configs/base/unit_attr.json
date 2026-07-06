@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "key": "UNIT_ATTR_DARK",
+    "name": "dark",
+    "color": "#424242",
+    "icon": "textures/icon/attr/icon-dark/spriteFrame"
+  },
+  {
+    "id": 2,
+    "key": "UNIT_ATTR_LIGHT",
+    "name": "light",
+    "color": "#fffde7",
+    "icon": "textures/icon/attr/icon-light/spriteFrame"
+  },
+  {
+    "id": 3,
+    "key": "UNIT_ATTR_WATER",
+    "name": "water",
+    "color": "#03a9f4",
+    "icon": "textures/icon/attr/icon-water/spriteFrame"
+  },
+  {
+    "id": 4,
+    "key": "UNIT_ATTR_FIRE",
+    "name": "fire",
+    "color": "#ff5722",
+    "icon": "textures/icon/attr/icon-fire/spriteFrame"
+  },
+  {
+    "id": 5,
+    "key": "UNIT_ATTR_EARTH",
+    "name": "earth",
+    "color": "#3e2723",
+    "icon": "textures/icon/attr/icon-earth/spriteFrame"
+  }
+]

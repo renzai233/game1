@@ -1,0 +1,19 @@
+{
+    "dropConfigs": {
+      "coin": {
+        "min": 1,
+        "max": 25,
+        "probability": 0.1
+      },
+      "gem": {
+        "min": 1,
+        "max": 2,
+        "probability": 0.01
+      },
+      "heroFragment": {
+        "min": 1,
+        "max": 1,
+        "probability": 0.05
+      }
+    }
+  }

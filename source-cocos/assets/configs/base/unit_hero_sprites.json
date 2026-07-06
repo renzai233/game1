@@ -1,0 +1,352 @@
+[
+  {
+    "main_id": 1,
+    "hero_id": "kaelog",
+    "type": "run",
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "width": 300,
+    "height": 37,
+    "item_width": 50,
+    "item_height": 37
+  },
+  {
+    "main_id": 1,
+    "hero_id": "kaelog",
+    "type": "attack",
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "width": 250,
+    "height": 37,
+    "item_width": 50,
+    "item_height": 37
+  },
+  {
+    "main_id": 1,
+    "hero_id": "kaelog",
+    "type": "hit",
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "width": 200,
+    "height": 37,
+    "item_width": 50,
+    "item_height": 37
+  },
+  {
+    "main_id": 2,
+    "hero_id": "hunter",
+    "type": "walk",
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "width": 768,
+    "height": 128,
+    "item_width": 128,
+    "item_height": 128
+  },
+  {
+    "main_id": 3,
+    "hero_id": "serra",
+    "type": "idle",
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "width": 768,
+    "height": 128,
+    "item_width": 128,
+    "item_height": 128
+  },
+  {
+    "main_id": 3,
+    "hero_id": "serra",
+    "type": "walk",
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "width": 768,
+    "height": 128,
+    "item_width": 128,
+    "item_height": 128
+  },
+  {
+    "main_id": 3,
+    "hero_id": "serra",
+    "type": "skill",
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "width": 768,
+    "height": 128,
+    "item_width": 128,
+    "item_height": 128
+  },
+  {
+    "main_id": 15,
+    "hero_id": "kapaba",
+    "type": "idle",
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "width": 11322,
+    "height": 726,
+    "item_width": 333,
+    "item_height": 726
+  },
+  {
+    "main_id": 15,
+    "hero_id": "kapaba",
+    "type": "run",
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "width": 26880,
+    "height": 1080,
+    "item_width": 1920,
+    "item_height": 1080
+  },
+  {
+    "main_id": 1,
+    "hero_id": "kaelog",
+    "type": "idle",
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "width": 2400,
+    "height": 200,
+    "item_width": 200,
+    "item_height": 200
+  },
+  {
+    "main_id": 1,
+    "hero_id": "kaelog",
+    "type": "skill",
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "width": 2400,
+    "height": 200,
+    "item_width": 200,
+    "item_height": 200
+  },
+  {
+    "main_id": 2,
+    "hero_id": "hunter",
+    "type": "idle",
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "width": 2400,
+    "height": 200,
+    "item_width": 200,
+    "item_height": 200
+  },
+  {
+    "main_id": 2,
+    "hero_id": "hunter",
+    "type": "skill",
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "width": 2400,
+    "height": 200,
+    "item_width": 200,
+    "item_height": 200
+  },
+  {
+    "main_id": 5,
+    "hero_id": "kaelon",
+    "type": "idle",
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "width": 2400,
+    "height": 200,
+    "item_width": 200,
+    "item_height": 200
+  },
+  {
+    "main_id": 5,
+    "hero_id": "kaelon",
+    "type": "skill",
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "width": 2400,
+    "height": 200,
+    "item_width": 200,
+    "item_height": 200
+  },
+  {
+    "main_id": 7,
+    "hero_id": "ela",
+    "type": "idle",
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "width": 2400,
+    "height": 200,
+    "item_width": 200,
+    "item_height": 200
+  },
+  {
+    "main_id": 7,
+    "hero_id": "ela",
+    "type": "skill",
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "width": 2400,
+    "height": 200,
+    "item_width": 200,
+    "item_height": 200
+  },
+  {
+    "main_id": 8,
+    "hero_id": "lina",
+    "type": "idle",
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "width": 2400,
+    "height": 200,
+    "item_width": 200,
+    "item_height": 200
+  },
+  {
+    "main_id": 8,
+    "hero_id": "lina",
+    "type": "skill",
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "width": 2400,
+    "height": 200,
+    "item_width": 200,
+    "item_height": 200
+  },
+  {
+    "main_id": 9,
+    "hero_id": "gal",
+    "type": "idle",
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "width": 2400,
+    "height": 200,
+    "item_width": 200,
+    "item_height": 200
+  },
+  {
+    "main_id": 9,
+    "hero_id": "gal",
+    "type": "skill",
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "width": 2400,
+    "height": 200,
+    "item_width": 200,
+    "item_height": 200
+  },
+  {
+    "main_id": 11,
+    "hero_id": "bru",
+    "type": "idle",
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "width": 2400,
+    "height": 200,
+    "item_width": 200,
+    "item_height": 200
+  },
+  {
+    "main_id": 11,
+    "hero_id": "bru",
+    "type": "skill",
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "width": 2400,
+    "height": 200,
+    "item_width": 200,
+    "item_height": 200
+  },
+  {
+    "main_id": 12,
+    "hero_id": "kaelen",
+    "type": "idle",
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "width": 2400,
+    "height": 200,
+    "item_width": 200,
+    "item_height": 200
+  },
+  {
+    "main_id": 12,
+    "hero_id": "kaelen",
+    "type": "skill",
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "width": 2400,
+    "height": 200,
+    "item_width": 200,
+    "item_height": 200
+  }
+]

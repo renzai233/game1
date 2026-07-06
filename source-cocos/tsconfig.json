@@ -1,0 +1,40 @@
+{
+  /* Base configuration. Do not edit this field. */
+  "extends": "./temp/tsconfig.cocos.json",
+  /* Add your custom configuration here. */
+  "compilerOptions": {
+    "strict": false,
+    "target": "ES2020", // 核心：升级到ES2020，支持allSettled/finally
+    "lib": [
+      "ES2020",
+      "DOM"
+    ], // 核心：引入ES2020+DOM库，补全API类型
+    "module": "ESNext", // 兼容动态导入（可选，和Cocos匹配）
+    "moduleResolution": "Node", // 模块解析方式
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true, // 必须开启（Cocos装饰器依赖）
+    "skipLibCheck": true, // 跳过库类型检查（避免第三方库报错）
+    "resolveJsonModule": true, // 支持导入JSON文件
+    "baseUrl": "./",
+    "paths": {
+      // 核心：添加db://assets/的路径映射
+      "db://assets/*": [
+        "assets/*"
+      ],
+      // 可选：添加@别名（简化导入，推荐）
+      "@/*": [
+        "assets/*"
+      ]
+    }
+  },
+  "include": [
+    "assets/**/*", // 包含所有assets下的TS文件
+    "typings/**/*" // 包含类型声明文件（若有）
+  ],
+  "exclude": [
+    "node_modules",
+    "library",
+    "temp",
+    "build"
+  ]
+}

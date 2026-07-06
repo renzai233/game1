@@ -1,0 +1,44 @@
+#///////////////////////////
+# Cocos Creator 临时文件
+#///////////////////////////
+/library/
+/local/
+/temp/
+
+#///////////////////////////
+# 构建产物
+#///////////////////////////
+/build/
+/native/
+/profiles/
+
+#//////////////////////////
+# 依赖项
+#//////////////////////////
+node_modules/
+Pods/
+
+#//////////////////////////
+# IDE配置文件
+#//////////////////////////
+.vscode/
+.idea/
+*.code-workspace
+.DS_Store
+Thumbs.db
+.creator/
+
+# ESLint/Prettier
+.eslintcache
+.prettier*
+build-tools/
+
+# 敏感数据
+.env
+config/secret*.json
+*.key
+
+# Xcode
+xcuserdata/
+*.xcuserstate
+DerivedData/

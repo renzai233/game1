@@ -1,0 +1,22 @@
+[
+  { "levelIndex": 1, "goldPerHour": 10, "fragmentPerHour": 1 },
+  { "levelIndex": 2, "goldPerHour": 12, "fragmentPerHour": 1 },
+  { "levelIndex": 3, "goldPerHour": 14, "fragmentPerHour": 1 },
+  { "levelIndex": 4, "goldPerHour": 16, "fragmentPerHour": 1 },
+  { "levelIndex": 5, "goldPerHour": 18, "fragmentPerHour": 2 },
+  { "levelIndex": 6, "goldPerHour": 20, "fragmentPerHour": 2 },
+  { "levelIndex": 7, "goldPerHour": 22, "fragmentPerHour": 2 },
+  { "levelIndex": 8, "goldPerHour": 24, "fragmentPerHour": 2 },
+  { "levelIndex": 9, "goldPerHour": 26, "fragmentPerHour": 2 },
+  { "levelIndex": 10, "goldPerHour": 28, "fragmentPerHour": 3 },
+  { "levelIndex": 11, "goldPerHour": 30, "fragmentPerHour": 3 },
+  { "levelIndex": 12, "goldPerHour": 32, "fragmentPerHour": 3 },
+  { "levelIndex": 13, "goldPerHour": 34, "fragmentPerHour": 3 },
+  { "levelIndex": 14, "goldPerHour": 36, "fragmentPerHour": 3 },
+  { "levelIndex": 15, "goldPerHour": 38, "fragmentPerHour": 4 },
+  { "levelIndex": 16, "goldPerHour": 40, "fragmentPerHour": 4 },
+  { "levelIndex": 17, "goldPerHour": 42, "fragmentPerHour": 4 },
+  { "levelIndex": 18, "goldPerHour": 44, "fragmentPerHour": 4 },
+  { "levelIndex": 19, "goldPerHour": 46, "fragmentPerHour": 4 },
+  { "levelIndex": 20, "goldPerHour": 50, "fragmentPerHour": 5 }
+]

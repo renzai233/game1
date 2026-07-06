@@ -1,0 +1,230 @@
+{
+  "id": "tutorial_story",
+  "name": "晶核防线新手剧情",
+  "description": "玩家首次进入几何晶核矩阵时的引导剧情",
+  "version": "1.0.0",
+  "globalVariables": {
+    "hasSeenTutorial": false,
+    "tutorialCompleted": false,
+    "heroName": "晶核守卫"
+  },
+  "triggers": [
+    {
+      "id": "tutorial_trigger",
+      "type": "level_start",
+      "condition": "!vars.hasSeenTutorial",
+      "chapterId": "chapter_1",
+      "priority": 1,
+      "once": true,
+      "triggered": false
+    }
+  ],
+  "chapters": [
+    {
+      "id": "chapter_1",
+      "name": "初次接入",
+      "description": "玩家首次进入几何晶核矩阵",
+      "startDialogueId": "dialogue_001",
+      "skipEnabled": true,
+      "autoPlayEnabled": false,
+      "autoPlaySpeed": 0.02,
+      "background": "forest_bg",
+      "bgm": "peaceful_forest",
+      "characters": [
+        {
+          "id": "hero",
+          "name": "晶核守卫",
+          "avatar": "hero_avatar",
+          "position": {
+            "x": -200,
+            "y": 0
+          },
+          "defaultExpression": "normal",
+          "animations": {
+            "idle": "hero_idle",
+            "talk": "hero_talk",
+            "walk": "hero_walk"
+          }
+        },
+        {
+          "id": "guide",
+          "name": "棱镜向导",
+          "avatar": "guide_avatar",
+          "position": {
+            "x": 200,
+            "y": 0
+          },
+          "defaultExpression": "happy",
+          "animations": {
+            "idle": "guide_idle",
+            "talk": "guide_talk"
+          }
+        }
+      ]
+    }
+  ],
+  "dialogues": [
+    {
+      "id": "dialogue_001",
+      "speaker": "棱镜向导",
+      "text": "欢迎来到几何晶核矩阵！我是你的棱镜向导。",
+      "expression": "happy",
+      "position": "right",
+      "autoPlay": false,
+      "skipEnabled": true,
+      "nextId": "dialogue_002",
+      "sound": "guide_welcome"
+    },
+    {
+      "id": "dialogue_002",
+      "speaker": "棱镜向导",
+      "text": "这里原本维持着稳定秩序，但最近不断出现侵蚀体。",
+      "expression": "sad",
+      "position": "right",
+      "autoPlay": false,
+      "skipEnabled": true,
+      "nextId": "dialogue_003"
+    },
+    {
+      "id": "dialogue_003",
+      "speaker": "棱镜向导",
+      "text": "我们需要你守住城墙，保护几何晶核矩阵。",
+      "expression": "serious",
+      "position": "right",
+      "autoPlay": false,
+      "skipEnabled": true,
+      "nextId": "dialogue_004"
+    },
+    {
+      "id": "dialogue_004",
+      "speaker": "棱镜向导",
+      "text": "你愿意接手这道防线吗？",
+      "expression": "hopeful",
+      "position": "right",
+      "autoPlay": false,
+      "skipEnabled": true,
+      "choices": [
+        {
+          "id": "choice_yes",
+          "text": "立刻出发！",
+          "nextId": "dialogue_005_accept",
+          "sound": "button_click"
+        },
+        {
+          "id": "choice_no",
+          "text": "再检查一下...",
+          "nextId": "dialogue_005_decline",
+          "sound": "button_click"
+        }
+      ]
+    },
+    {
+      "id": "dialogue_005_accept",
+      "speaker": "棱镜向导",
+      "text": "太好了！晶核守卫就位，防线可以重新启动了。",
+      "expression": "happy",
+      "position": "right",
+      "autoPlay": false,
+      "skipEnabled": true,
+      "nextId": "dialogue_006",
+      "actions": [
+        {
+          "type": "character_expression",
+          "data": {
+            "characterId": "guide",
+            "expression": "happy"
+          }
+        },
+        {
+          "type": "effect_play",
+          "data": {
+            "effectId": "sparkle",
+            "position": {
+              "x": 200,
+              "y": 100
+            },
+            "loop": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "dialogue_005_decline",
+      "speaker": "棱镜向导",
+      "text": "没关系，我理解你的顾虑。但是，几何晶核矩阵真的需要支援。",
+      "expression": "sad",
+      "position": "right",
+      "autoPlay": false,
+      "skipEnabled": true,
+      "nextId": "dialogue_004"
+    },
+    {
+      "id": "dialogue_006",
+      "speaker": "棱镜向导",
+      "text": "我先带你熟悉战斗流程。",
+      "expression": "happy",
+      "position": "right",
+      "autoPlay": false,
+      "skipEnabled": true,
+      "nextId": "dialogue_007"
+    },
+    {
+      "id": "dialogue_007",
+      "speaker": "棱镜向导",
+      "text": "首先，你需要了解你的守卫。他们是防线的核心单位。",
+      "expression": "normal",
+      "position": "right",
+      "autoPlay": false,
+      "skipEnabled": true,
+      "nextId": "dialogue_008"
+    },
+    {
+      "id": "dialogue_008",
+      "speaker": "棱镜向导",
+      "text": "守卫可以学习技能，升级提升属性，并在战斗中自动释放攻击。",
+      "expression": "normal",
+      "position": "right",
+      "autoPlay": false,
+      "skipEnabled": true,
+      "nextId": "dialogue_009"
+    },
+    {
+      "id": "dialogue_009",
+      "speaker": "棱镜向导",
+      "text": "现在，让我带你进入第一个关卡。",
+      "expression": "happy",
+      "position": "right",
+      "autoPlay": false,
+      "skipEnabled": true,
+      "nextId": "dialogue_010",
+      "actions": [
+        {
+          "type": "variable_set",
+          "data": {
+            "key": "hasSeenTutorial",
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "dialogue_010",
+      "speaker": "棱镜向导",
+      "text": "准备好了吗？防线启动！",
+      "expression": "excited",
+      "position": "right",
+      "autoPlay": false,
+      "skipEnabled": true,
+      "nextId": null,
+      "actions": [
+        {
+          "type": "variable_set",
+          "data": {
+            "key": "tutorialCompleted",
+            "value": true
+          }
+        }
+      ]
+    }
+  ]
+}

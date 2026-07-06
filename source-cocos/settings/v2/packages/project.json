@@ -1,0 +1,35 @@
+{
+  "__version__": "1.0.6",
+  "general": {
+    "designResolution": {
+      "width": 750,
+      "height": 1334,
+      "fitHeight": false,
+      "fitWidth": true
+    }
+  },
+  "physics": {
+    "collisionGroups": [
+      {
+        "index": 1,
+        "name": "Bullet"
+      },
+      {
+        "index": 2,
+        "name": "Monster"
+      },
+      {
+        "index": 3,
+        "name": "Wall"
+      }
+    ],
+    "collisionMatrix": {
+      "0": 7,
+      "1": 5,
+      "2": 11,
+      "3": 4,
+      "4": 0
+    }
+  },
+  "custom_joint_texture_layouts": []
+}

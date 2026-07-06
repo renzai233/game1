@@ -1,0 +1,366 @@
+[
+  {
+    "id": 1,
+    "skill_id": 1001,
+    "type": "release",
+    "scale": [
+      1.15,
+      1.15,
+      1
+    ],
+    "width": 576,
+    "height": 96,
+    "item_width": 96,
+    "item_height": 96
+  },
+  {
+    "id": 2,
+    "skill_id": 1002,
+    "type": "blow",
+    "scale": [
+      1.12,
+      1.12,
+      1
+    ],
+    "width": 576,
+    "height": 96,
+    "item_width": 96,
+    "item_height": 96
+  },
+  {
+    "id": 3,
+    "skill_id": 1002,
+    "type": "release",
+    "scale": [
+      1.12,
+      1.12,
+      1
+    ],
+    "width": 576,
+    "height": 96,
+    "item_width": 96,
+    "item_height": 96
+  },
+  {
+    "id": 4,
+    "skill_id": 1003,
+    "type": "blow",
+    "scale": [
+      1.2,
+      1.2,
+      1
+    ],
+    "width": 576,
+    "height": 96,
+    "item_width": 96,
+    "item_height": 96
+  },
+  {
+    "id": 5,
+    "skill_id": 1003,
+    "type": "release",
+    "scale": [
+      1.2,
+      1.2,
+      1
+    ],
+    "width": 576,
+    "height": 96,
+    "item_width": 96,
+    "item_height": 96
+  },
+  {
+    "id": 6,
+    "skill_id": 1004,
+    "type": "release",
+    "scale": [
+      1.15,
+      1.15,
+      1
+    ],
+    "width": 576,
+    "height": 96,
+    "item_width": 96,
+    "item_height": 96
+  },
+  {
+    "id": 7,
+    "skill_id": 1004,
+    "type": "blow",
+    "scale": [
+      1.15,
+      1.15,
+      1
+    ],
+    "width": 576,
+    "height": 96,
+    "item_width": 96,
+    "item_height": 96
+  },
+  {
+    "id": 8,
+    "skill_id": 1005,
+    "type": "release",
+    "scale": [
+      1.12,
+      1.12,
+      1
+    ],
+    "width": 576,
+    "height": 96,
+    "item_width": 96,
+    "item_height": 96
+  },
+  {
+    "id": 9,
+    "skill_id": 1006,
+    "type": "release",
+    "scale": [
+      1.12,
+      1.12,
+      1
+    ],
+    "width": 576,
+    "height": 96,
+    "item_width": 96,
+    "item_height": 96
+  },
+  {
+    "id": 10,
+    "skill_id": 1006,
+    "type": "blow",
+    "scale": [
+      1.12,
+      1.12,
+      1
+    ],
+    "width": 576,
+    "height": 96,
+    "item_width": 96,
+    "item_height": 96
+  },
+  {
+    "id": 11,
+    "skill_id": 1007,
+    "type": "blow",
+    "scale": [
+      1.2,
+      1.2,
+      1
+    ],
+    "width": 576,
+    "height": 96,
+    "item_width": 96,
+    "item_height": 96
+  },
+  {
+    "id": 12,
+    "skill_id": 1007,
+    "type": "release",
+    "scale": [
+      1.2,
+      1.2,
+      1
+    ],
+    "width": 576,
+    "height": 96,
+    "item_width": 96,
+    "item_height": 96
+  },
+  {
+    "id": 13,
+    "skill_id": 1008,
+    "type": "blow",
+    "scale": [
+      1.12,
+      1.12,
+      1
+    ],
+    "width": 576,
+    "height": 96,
+    "item_width": 96,
+    "item_height": 96
+  },
+  {
+    "id": 14,
+    "skill_id": 1008,
+    "type": "release",
+    "scale": [
+      1.12,
+      1.12,
+      1
+    ],
+    "width": 576,
+    "height": 96,
+    "item_width": 96,
+    "item_height": 96
+  },
+  {
+    "id": 15,
+    "skill_id": 1013,
+    "type": "blow",
+    "scale": [
+      1.2,
+      1.2,
+      1
+    ],
+    "width": 576,
+    "height": 96,
+    "item_width": 96,
+    "item_height": 96
+  },
+  {
+    "id": 16,
+    "skill_id": 1013,
+    "type": "release",
+    "scale": [
+      1.2,
+      1.2,
+      1
+    ],
+    "width": 576,
+    "height": 96,
+    "item_width": 96,
+    "item_height": 96
+  },
+  {
+    "id": 17,
+    "skill_id": 1010,
+    "type": "blow",
+    "scale": [
+      1.2,
+      1.2,
+      1
+    ],
+    "width": 576,
+    "height": 96,
+    "item_width": 96,
+    "item_height": 96
+  },
+  {
+    "id": 18,
+    "skill_id": 1010,
+    "type": "release",
+    "scale": [
+      1.2,
+      1.2,
+      1
+    ],
+    "width": 576,
+    "height": 96,
+    "item_width": 96,
+    "item_height": 96
+  },
+  {
+    "id": 19,
+    "skill_id": 1011,
+    "type": "blow",
+    "scale": [
+      1.2,
+      1.2,
+      1
+    ],
+    "width": 576,
+    "height": 96,
+    "item_width": 96,
+    "item_height": 96
+  },
+  {
+    "id": 20,
+    "skill_id": 1011,
+    "type": "release",
+    "scale": [
+      1.2,
+      1.2,
+      1
+    ],
+    "width": 576,
+    "height": 96,
+    "item_width": 96,
+    "item_height": 96
+  },
+  {
+    "id": 21,
+    "skill_id": 1012,
+    "type": "blow",
+    "scale": [
+      1.12,
+      1.12,
+      1
+    ],
+    "width": 576,
+    "height": 96,
+    "item_width": 96,
+    "item_height": 96
+  },
+  {
+    "id": 22,
+    "skill_id": 1012,
+    "type": "release",
+    "scale": [
+      1.12,
+      1.12,
+      1
+    ],
+    "width": 576,
+    "height": 96,
+    "item_width": 96,
+    "item_height": 96
+  },
+  {
+    "id": 23,
+    "skill_id": 1001,
+    "type": "blow",
+    "scale": [
+      1.15,
+      1.15,
+      1
+    ],
+    "width": 576,
+    "height": 96,
+    "item_width": 96,
+    "item_height": 96
+  },
+  {
+    "id": 24,
+    "skill_id": 1005,
+    "type": "blow",
+    "scale": [
+      1.12,
+      1.12,
+      1
+    ],
+    "width": 576,
+    "height": 96,
+    "item_width": 96,
+    "item_height": 96
+  },
+  {
+    "id": 25,
+    "skill_id": 1009,
+    "type": "blow",
+    "scale": [
+      1.15,
+      1.15,
+      1
+    ],
+    "width": 576,
+    "height": 96,
+    "item_width": 96,
+    "item_height": 96
+  },
+  {
+    "id": 26,
+    "skill_id": 1009,
+    "type": "release",
+    "scale": [
+      1.15,
+      1.15,
+      1
+    ],
+    "width": 576,
+    "height": 96,
+    "item_width": 96,
+    "item_height": 96
+  }
+]

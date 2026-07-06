@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "key": "UNIT_POSI_WARRIOR",
+    "name": "warrior"
+  },
+  {
+    "id": 2,
+    "key": "UNIT_POSI_MAGE",
+    "name": "mage"
+  },
+  {
+    "id": 3,
+    "key": "UNIT_POSI_ARCHER",
+    "name": "archer"
+  },
+  {
+    "id": 4,
+    "key": "UNIT_POSI_TANK",
+    "name": "tank"
+  },
+  {
+    "id": 5,
+    "key": "UNIT_POSI_SUPPORT",
+    "name": "support"
+  },
+  {
+    "id": 6,
+    "key": "UNIT_POSI_ASSASSIN",
+    "name": "assassin"
+  }
+]

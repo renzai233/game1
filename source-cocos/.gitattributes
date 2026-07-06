@@ -1,0 +1,5 @@
+# 标记 .scene/.prefab/.meta 为二进制文件，Git 不会尝试合并
+**/*.meta binary
+
+# 2. 强制指定：合并时这些文件自动保留本分支版本（核心规则）
+**/*.meta merge=ours

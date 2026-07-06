@@ -1,0 +1,1441 @@
+// ShopUI.ts - 完整修复版本
+import { _decorator, Component, Node, Label, Sprite, Button, UITransform, tween, Color, Vec3, SpriteFrame, AudioSource, director, Widget, Layout, UIOpacity, Texture2D, ScrollView } from 'cc';
+import { ShopManager } from './ShopManager';
+import { gameBus } from '../signal/GameBus';
+import { SIGNAL_TYPES } from '../signal/ISignal';
+import { IShopGoods } from './ShopConfig';
+import { FullScreenPanel } from '../ui/FullScreenPanel';
+import { CurrencyType, CDM } from '../common/CurrencyManager';
+import { NavigationUtils } from '../navigation';
+import { APM } from '../common/AudioPlayManager';
+import { ToastPanel } from '../common/ToastPanel';
+import { AdManager } from '../common/AdManager';
+import { loadResSingleAsset } from '../utils';
+
+const { ccclass, property } = _decorator;
+
+const SHOP_ICON_PATHS: Record<string, string> = {
+    gold_icon: 'textures/icon/res/coin/spriteFrame',
+    gem_icon: 'textures/icon/res/gem/spriteFrame',
+    energy_icon: 'textures/icon/res/stamina/spriteFrame',
+    gold_small: 'textures/icon/res/stamina/spriteFrame',
+    gold_medium: 'textures/icon/res/coin02/spriteFrame',
+    gold_large: 'textures/icon/res/treasure/spriteFrame',
+    hero_fragment_single: 'textures/ui/popup/fragment/spriteFrame',
+    hero_fragment_multi: 'textures/ui/popup/fragment/spriteFrame',
+    hero_fragment_dev: 'textures/ui/popup/fragment/spriteFrame',
+};
+
+const SHOP_RESOURCE_ICON_PATHS: Record<string, string> = {
+    Gold: 'textures/icon/res/coin/spriteFrame',
+    Gem: 'textures/icon/res/gem/spriteFrame',
+    Stamina: 'textures/icon/res/stamina/spriteFrame',
+};
+
+const SHOP_POLISH_ASSETS = {
+    cardFrame: 'textures/ui/skin1/polish/supply_card_frame/texture',
+    claimButton: 'textures/ui/skin1/polish/supply_claim_button/texture',
+    lotteryChamber: 'textures/ui/skin1/polish/lottery_chamber_frame/texture',
+    vaultSlot: 'textures/ui/skin1/polish/vault_slot_frame/texture',
+};
+
+// 商品UI组件接口
+interface IGoodsUI {
+    root: Node;
+    icon: Sprite;              // 图标组件
+    noti: Node;
+    amountLabel: Label;
+    nameLabel: Label;
+    descLabel: Label;
+    freeBtn: Button;
+    adBtn: Button;
+    buyBtn: Button;
+    adCountLabel: Label;
+    countdownLabel: Label;
+    costLabel: Label;
+    adBtnLabel: Label;
+    freeBtnLabel: Label;
+    freeBtnNode: Node;         // 免费按钮节点
+    adBtnNode: Node;           // 广告按钮节点
+    buyBtnNode: Node;          // 购买按钮节点
+
+    // 回调函数引用
+    freeBtnCallback?: () => void;
+    adBtnCallback?: () => void;
+    buyBtnCallback?: () => void;
+}
+
+@ccclass('ShopUI')
+export class ShopUI extends FullScreenPanel {
+
+    @property(Node)
+    private itemList: Node = null!;
+
+    @property(Node)
+    private hudNode: Node = null!; // HUD节点引用
+
+    @property({ type: AudioSource })
+    private audioSource: AudioSource = null!; // 音效组件
+
+    @property({ type: SpriteFrame })
+    private flyIconGold: SpriteFrame = null!; // 金币飞行图标
+
+    @property({ type: SpriteFrame })
+    private flyIconGem: SpriteFrame = null!; // 宝石飞行图标
+
+    @property({ type: SpriteFrame })
+    private flyIconStamina: SpriteFrame = null!; // 体力飞行图标
+
+    private shopManager: ShopManager | null = null;
+    private goodsUIs: Map<number, IGoodsUI> = new Map();
+    private updateInterval: number | null = null;
+    private isInitialized: boolean = false;
+    private isUpdating: boolean = false; // 防止重复更新
+
+    // 按钮点击防抖
+    private buttonCooldowns: Map<number, boolean> = new Map();
+
+    // 添加事件回调引用
+    private eventCallbacks: {
+        shopDataUpdated?: () => void;
+        currencyChanged?: (event: any) => void;
+        goodsClaimed?: (event: any) => void;
+        goodsPurchased?: (event: any) => void;
+    } = {};
+
+    onLoad(): void {
+        super.onLoad();
+        this.closeOnMask = false;
+    }
+
+    /**
+     * UI显示时回调 - 立即显示界面
+     */
+    protected onShow(data?: any): void {
+        super.onShow(data);
+
+        // 设置层级
+        NavigationUtils.setPanelSiblingIndex(this.node, 50);
+
+        this.applyShopPolishLayout();
+        this.scheduleShopPolishLayout();
+
+        // 立即初始化商店UI
+        this.initializeShopUI();
+    }
+
+    /**
+     * 初始化商店UI - 优化性能
+     */
+    private async initializeShopUI(): Promise<void> {
+        if (this.isUpdating || !this.node || !this.node.isValid) return;
+
+        this.isUpdating = true;
+
+        try {
+            console.log('[ShopUI] 开始初始化');
+
+            // 获取ShopManager实例
+            this.shopManager = ShopManager.getInstance();
+            if (!this.shopManager) {
+                console.error('[ShopUI] 无法获取ShopManager实例');
+                return;
+            }
+
+            // 清理并初始化
+            this.cleanupOldReferences();
+            this.initGoodsUIs();
+            this.applyShopPolishLayout();
+
+            // 立即更新UI
+            this.updateAllGoodsImmediate();
+            this.setupEventListeners();
+            this.startUpdateTimer();
+            this.scheduleShopPolishLayout();
+
+            this.isInitialized = true;
+            console.log('[ShopUI] 初始化完成');
+
+        } catch (error) {
+            console.error('[ShopUI] 初始化失败:', error);
+        } finally {
+            this.isUpdating = false;
+        }
+    }
+
+    /**
+     * 清理旧引用和事件
+     */
+    private cleanupOldReferences(): void {
+        // 移除所有按钮事件
+        this.removeAllButtonEvents();
+
+        // 清空UI引用
+        this.goodsUIs.clear();
+
+        // 清除定时器
+        if (this.updateInterval) {
+            clearInterval(this.updateInterval);
+            this.updateInterval = null;
+        }
+    }
+
+    /**
+     * 启动更新定时器
+     */
+    private startUpdateTimer(): void {
+        if (this.updateInterval) {
+            clearInterval(this.updateInterval);
+        }
+
+        this.updateInterval = setInterval(() => {
+            this.updateCountdowns();
+        }, 1000) as unknown as number;
+    }
+
+    /**
+     * 备用查找方法
+     */
+    private findGoodsNodesFallback(): void {
+        if (!this.itemList) return;
+
+        const childCount = this.itemList.children.length;
+        for (let i = 0; i < childCount; i++) {
+            const child = this.itemList.children[i];
+            if (child.name.includes('Good')) {
+                const match = child.name.match(/\d+/);
+                if (match) {
+                    const id = parseInt(match[0]);
+                    if (id >= 1 && id <= 6) {
+                        const goodsUI = this.createGoodsUI(child, id);
+                        if (goodsUI) {
+                            this.goodsUIs.set(id, goodsUI);
+                            this.setupGoodsEvents(id, goodsUI);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 初始化商品UI引用 - 修复节点查找
+     */
+    private initGoodsUIs(): void {
+        // 查找所有商品节点
+        for (let i = 1; i <= 6; i++) {
+            const nodeNames = [
+                `Good-0${i}`,
+                `Good0${i}`,
+                `Good_0${i}`
+            ];
+
+            let goodsNode: Node | null = null;
+            for (const name of nodeNames) {
+                goodsNode = this.itemList.getChildByName(name);
+                if (goodsNode) break;
+            }
+
+            if (!goodsNode) {
+                console.warn(`[ShopUI] 未找到商品节点: ${i}`);
+                continue;
+            }
+
+            const goodsUI = this.createGoodsUI(goodsNode, i);
+            if (goodsUI) {
+                this.goodsUIs.set(i, goodsUI);
+                this.setupGoodsEvents(i, goodsUI);
+            }
+        }
+    }
+
+    /**
+     * 创建商品UI引用
+     */
+    private createGoodsUI(goodsNode: Node, id: number): IGoodsUI | null {
+        try {
+            // 查找关键节点
+            const iconNode = goodsNode.getChildByName('Icon');
+            const freeBtnNode = goodsNode.getChildByName('FreeBtn');
+            const adBtnNode = goodsNode.getChildByName('AdBtn');
+            const buyBtnNode = goodsNode.getChildByName('BuyBtn');
+
+            // 创建UI对象
+            const goodsUI: IGoodsUI = {
+                root: goodsNode,
+                icon: iconNode?.getComponent(Sprite) || null!,
+                noti: goodsNode.getChildByName('Noti') || new Node(),
+                amountLabel: goodsNode.getChildByName('Amount')?.getComponent(Label) || null!,
+                nameLabel: goodsNode.getChildByName('Name')?.getComponent(Label) || null!,
+                descLabel: goodsNode.getChildByName('Desc')?.getComponent(Label) || null!,
+                freeBtn: freeBtnNode?.getComponent(Button) || null!,
+                adBtn: adBtnNode?.getComponent(Button) || null!,
+                buyBtn: buyBtnNode?.getComponent(Button) || null!,
+                freeBtnNode: freeBtnNode || new Node(),
+                adBtnNode: adBtnNode || new Node(),
+                buyBtnNode: buyBtnNode || new Node(),
+                adCountLabel: adBtnNode?.getChildByName('AdCount')?.getComponent(Label) || null!,
+                countdownLabel: adBtnNode?.getChildByName('Countdown')?.getComponent(Label) || null!,
+                costLabel: buyBtnNode?.getChildByName('Cost')?.getComponent(Label) || null!,
+                adBtnLabel: adBtnNode?.getChildByName('Label')?.getComponent(Label) || null!,
+                freeBtnLabel: freeBtnNode?.getChildByName('Label')?.getComponent(Label) || null!
+            };
+
+            this.applyGoodsVisualStyle(goodsUI);
+            this.applyGoodsNodeLayout(goodsUI, id);
+            return goodsUI;
+
+        } catch (error) {
+            console.error(`[ShopUI] 创建商品 ${id} UI引用失败:`, error);
+            return null;
+        }
+    }
+
+    /**
+     * 设置商品事件 - 添加防抖和立即反馈
+     */
+    private setupGoodsEvents(id: number, goodsUI: IGoodsUI): void {
+        // 移除旧事件
+        this.removeButtonEvents(id, goodsUI);
+
+        // 设置冷却标志
+        this.buttonCooldowns.set(id, false);
+
+        // 免费按钮事件
+        if (goodsUI.freeBtn) {
+            goodsUI.freeBtnCallback = () => {
+                if (this.buttonCooldowns.get(id)) return;
+
+                // 立即反馈
+                this.playButtonClickEffect(goodsUI.freeBtnNode);
+                this.playSound('click');
+
+                // 设置冷却
+                this.buttonCooldowns.set(id, true);
+                setTimeout(() => {
+                    this.buttonCooldowns.set(id, false);
+                }, 500);
+
+                // 执行领取
+                const result = this.shopManager?.claimFree(id);
+                if (result?.success) {
+                    this.playSound('claim');
+                    this.playFlyAnimation(id, 'free');
+                    this.updateGoodsUI(id);
+                } else if (result?.message) {
+                    // 显示错误提示
+                    this.showToast(result.message);
+                }
+            };
+            goodsUI.freeBtn.node.on(Button.EventType.CLICK, goodsUI.freeBtnCallback, this);
+        }
+
+        // 广告按钮事件
+        if (goodsUI.adBtn) {
+            goodsUI.adBtnCallback = () => {
+                if (this.buttonCooldowns.get(id)) return;
+
+                // 立即反馈
+                this.playButtonClickEffect(goodsUI.adBtnNode);
+                this.playSound('click');
+
+                // 设置冷却
+                this.buttonCooldowns.set(id, true);
+                setTimeout(() => {
+                    this.buttonCooldowns.set(id, false);
+                }, 500);
+
+                // 获取当前状态
+                const state = this.shopManager?.getGoodsState(id);
+                const remainingCount = this.shopManager ? this.shopManager.getAdRemainingCount(id) : 0;
+                const isInCooldown = state?.countdown && state.countdown > 0;
+
+                // 检查各种失败情况
+                if (remainingCount <= 0) {
+                    this.showToast('今日广告次数已用完');
+                    return;
+                }
+
+                if (isInCooldown) {
+                    this.showToast('广告冷却中，请稍后再试');
+                    return;
+                }
+
+                // 立即更新UI显示（预扣次数）
+                if (state && remainingCount > 0 && goodsUI.adCountLabel) {
+                    const newRemaining = remainingCount - 1;
+                    goodsUI.adCountLabel.string = `x${newRemaining}`;
+                }
+
+                // 执行广告领取 - 现在使用真实的AdManager
+                const result = this.shopManager?.claimByAd(id);
+                // result返回的是立即调用的结果，真正的广告结果在回调中处理
+            };
+            goodsUI.adBtn.node.on(Button.EventType.CLICK, goodsUI.adBtnCallback, this);
+        }
+
+        // 购买按钮事件
+        if (goodsUI.buyBtn) {
+            goodsUI.buyBtnCallback = () => {
+                if (this.buttonCooldowns.get(id)) return;
+
+                // 立即反馈
+                this.playButtonClickEffect(goodsUI.buyBtnNode);
+                this.playSound('click');
+
+                // 设置冷却
+                this.buttonCooldowns.set(id, true);
+                setTimeout(() => {
+                    this.buttonCooldowns.set(id, false);
+                }, 500);
+
+                // 执行购买
+                const result = this.shopManager?.purchase(id);
+                if (result?.success) {
+                    this.playSound('purchase');
+                    this.playFlyAnimation(id, 'purchase');
+                    this.updateGoodsUI(id);
+                } else if (result?.message) {
+                    // 显示错误提示
+                    this.showToast(result.message);
+                }
+            };
+            goodsUI.buyBtn.node.on(Button.EventType.CLICK, goodsUI.buyBtnCallback, this);
+        }
+    }
+
+    private playButtonClickEffect(node: Node): void {
+        if (!node || !node.isValid) return;
+
+        const sprite = node.getComponent(Sprite);
+        if (sprite) {
+            const originalColor = sprite.color.clone();
+            sprite.color = new Color(200, 200, 200, 255);
+
+            this.scheduleOnce(() => {
+                if (node && node.isValid) {
+                    sprite.color = originalColor;
+                }
+            }, 0.1);
+        }
+    }
+
+    /**
+     * 移除按钮事件
+     */
+    private removeButtonEvents(id: number, goodsUI: IGoodsUI): void {
+        try {
+            // 检查按钮和节点是否有效
+            if (goodsUI.freeBtn && goodsUI.freeBtn.node && goodsUI.freeBtn.node.isValid && goodsUI.freeBtnCallback) {
+                goodsUI.freeBtn.node.off(Button.EventType.CLICK, goodsUI.freeBtnCallback, this);
+            }
+            if (goodsUI.adBtn && goodsUI.adBtn.node && goodsUI.adBtn.node.isValid && goodsUI.adBtnCallback) {
+                goodsUI.adBtn.node.off(Button.EventType.CLICK, goodsUI.adBtnCallback, this);
+            }
+            if (goodsUI.buyBtn && goodsUI.buyBtn.node && goodsUI.buyBtn.node.isValid && goodsUI.buyBtnCallback) {
+                goodsUI.buyBtn.node.off(Button.EventType.CLICK, goodsUI.buyBtnCallback, this);
+            }
+
+            // 清除回调引用
+            goodsUI.freeBtnCallback = undefined;
+            goodsUI.adBtnCallback = undefined;
+            goodsUI.buyBtnCallback = undefined;
+
+        } catch (error) {
+            console.warn(`[ShopUI] 移除按钮 ${id} 事件失败:`, error);
+        }
+    }
+
+    /**
+     * 立即更新所有商品
+     */
+    private updateAllGoodsImmediate(): void {
+
+        // 分批更新，避免卡顿
+        for (let i = 1; i <= 6; i++) {
+            this.scheduleOnce(() => {
+                this.updateGoodsUI(i);
+            }, i * 0.01); // 每10ms更新一个
+        }
+    }
+
+    /**
+     * 更新单个商品UI
+     */
+    private updateGoodsUI(id: number): void {
+        if (!this.shopManager || !this.isInitialized) return;
+
+        const goodsUI = this.goodsUIs.get(id);
+        if (!goodsUI) return;
+
+        const goodsList = this.shopManager.getGoodsList();
+        const goods = goodsList.find(g => g.id === id);
+        const state = this.shopManager.getGoodsState(id);
+
+        if (!goods || !state) return;
+        // 更新基本信息
+        if (goodsUI.nameLabel) goodsUI.nameLabel.string = goods.name;
+        if (goodsUI.descLabel) goodsUI.descLabel.string = goods.description;
+        if (goodsUI.amountLabel) goodsUI.amountLabel.string = `${goods.amount}个`;
+        this.applyGoodsVisualStyle(goodsUI);
+        this.applyGoodsNodeLayout(goodsUI, id);
+        this.applyGoodsIcon(goodsUI, goods);
+
+        // 先更新按钮显示/隐藏（互斥逻辑）
+        this.updateButtonsVisibility(goodsUI, goods, state);
+
+        // 然后更新各个按钮的状态
+        if (goods.id <= 3) {
+            // 前3个商品
+            this.updateFreeButton(goodsUI, goods, state);
+            this.updateAdButton(goodsUI, goods, state, id);
+        } else {
+            // 后3个商品
+            this.updateBuyButton(goodsUI, goods);
+        }
+    }
+
+    private applyShopPolishLayout(): void {
+        this.applyShopHudLayout();
+        this.applyItemListLayout();
+        this.applyLotteryPanelLayout();
+    }
+
+    private scheduleShopPolishLayout(): void {
+        this.scheduleOnce(() => this.applyShopPolishLayout(), 0.08);
+        this.scheduleOnce(() => this.applyShopPolishLayout(), 0.45);
+        this.scheduleOnce(() => this.applyShopPolishLayout(), 0.9);
+    }
+
+    private applyShopHudLayout(): void {
+        if (!this.hudNode || !this.hudNode.isValid) return;
+
+        const widget = this.hudNode.getComponent(Widget);
+        if (widget) widget.enabled = false;
+
+        this.hudNode.active = true;
+        this.hudNode.setPosition(new Vec3(0, 494, 0));
+        this.hudNode.setScale(new Vec3(0.78, 0.78, 1));
+        this.setNodeOpacity(this.hudNode, 245);
+        this.setNodeSize(this.hudNode, 640, 64);
+
+        const cells = [
+            { name: 'Gold', x: -214, width: 176, iconX: -58 },
+            { name: 'Gem', x: 0, width: 176, iconX: -58 },
+            { name: 'Stamina', x: 218, width: 206, iconX: -70 },
+        ];
+
+        cells.forEach((cell) => {
+            const node = this.hudNode.getChildByName(cell.name);
+            if (!node) return;
+
+            node.active = true;
+            node.setPosition(new Vec3(cell.x, 0, 0));
+            node.setScale(new Vec3(1, 1, 1));
+            this.setNodeSize(node, cell.width, 56);
+            this.setNodeOpacity(node, 255);
+
+            const bg = node.getChildByName('Bg');
+            if (bg) {
+                this.setNodeSize(bg, cell.width, 56);
+                const bgSprite = bg.getComponent(Sprite);
+                if (bgSprite) bgSprite.color = new Color(8, 16, 44, 255);
+                this.setNodeOpacity(bg, 176);
+            }
+
+            const icon = node.getChildByName('Icon');
+            if (icon) {
+                icon.setPosition(new Vec3(cell.iconX, 0, 0));
+                this.setNodeSize(icon, 42, 42);
+                const iconSprite = icon.getComponent(Sprite);
+                if (iconSprite) {
+                    iconSprite.sizeMode = Sprite.SizeMode.CUSTOM;
+                    this.loadSpriteFrameInto(iconSprite, SHOP_RESOURCE_ICON_PATHS[cell.name]);
+                }
+            }
+
+            const simpleLabel = node.getChildByName(`${cell.name}Label`)?.getComponent(Label);
+            if (simpleLabel) {
+                const labelNode = simpleLabel.node;
+                labelNode.setPosition(new Vec3(cell.name === 'Stamina' ? 18 : 20, 0, 0));
+                this.setNodeSize(labelNode, cell.name === 'Stamina' ? 96 : 104, 34);
+                this.styleGoodsLabel(simpleLabel, 22, 27, true, new Color(236, 250, 255, 255));
+            }
+
+            const numNode = node.getChildByName('Num');
+            if (numNode) {
+                numNode.setPosition(new Vec3(22, 0, 0));
+                this.setNodeSize(numNode, 112, 34);
+                ['Current', 'Slash', 'Max'].forEach((name) => {
+                    const label = numNode.getChildByName(name)?.getComponent(Label) || null;
+                    this.styleGoodsLabel(label, 20, 25, true, new Color(236, 250, 255, 255));
+                });
+            }
+
+            const timer = node.getChildByName('Timer');
+            if (timer) {
+                timer.setPosition(new Vec3(34, -31, 0));
+                this.setNodeSize(timer, 86, 24);
+                this.styleGoodsLabel(timer.getComponent(Label), 15, 19, true, new Color(111, 230, 255, 230));
+            }
+        });
+    }
+
+    private applyItemListLayout(): void {
+        if (!this.itemList || !this.itemList.isValid) return;
+
+        // 彻底移除 ScrollView 组件，避免拖拽滚动和事件吞噬
+        const scrollView = this.itemList.getComponent(ScrollView);
+        if (scrollView) scrollView.destroy();
+
+        const widget = this.itemList.getComponent(Widget);
+        if (widget) {
+            widget.enabled = false;
+            widget.isAlignTop = false;
+            widget.isAlignBottom = false;
+            widget.isAlignLeft = false;
+            widget.isAlignRight = false;
+            widget.isAlignVerticalCenter = false;
+            widget.isAlignHorizontalCenter = false;
+        }
+
+        const layout = this.itemList.getComponent(Layout);
+        if (layout) layout.enabled = false;
+
+        this.itemList.setPosition(new Vec3(0, 160, 0));
+        this.setNodeSize(this.itemList, 690, 620);
+
+        const positions = [
+            new Vec3(-218, 145, 0),
+            new Vec3(0, 145, 0),
+            new Vec3(218, 145, 0),
+            new Vec3(-218, -135, 0),
+            new Vec3(0, -135, 0),
+            new Vec3(218, -135, 0),
+        ];
+
+        for (let i = 1; i <= 6; i++) {
+            const node = this.findGoodsNode(i);
+            if (!node) continue;
+            node.setPosition(positions[i - 1]);
+            node.setScale(new Vec3(0.92, 0.92, 1));
+        }
+    }
+
+    private applyLotteryPanelLayout(): void {
+        const content = this.node.getChildByName('Content');
+        const lotteryPanel = content?.getChildByName('LotteryPanel');
+        if (!lotteryPanel) return;
+
+        const widget = lotteryPanel.getComponent(Widget);
+        if (widget) widget.enabled = false;
+
+        // 彻底禁用并隐藏 LotteryPanel 的暗色全屏遮罩 (Mask) 节点，防止事件拦截和发暗
+        const maskNode = lotteryPanel.getChildByName('Mask');
+        if (maskNode) maskNode.active = false;
+
+        // 向上平移，避开底部导航条遮挡，并微调缩放使得排版精致
+        lotteryPanel.setPosition(new Vec3(0, -295, 0));
+        lotteryPanel.setScale(new Vec3(0.8, 0.8, 1));
+        this.setNodeOpacity(lotteryPanel, 255);
+
+        const frame = this.ensureChild(lotteryPanel, 'Skin1LotteryChamber', 636, 292);
+        frame.setSiblingIndex(0);
+        this.applySpriteAsset(frame, SHOP_POLISH_ASSETS.lotteryChamber, 255);
+
+        const legacyBg = lotteryPanel.getChildByName('Bg') || lotteryPanel.getChildByName('Background');
+        this.setNodeOpacity(legacyBg, 18);
+        this.applyLotteryRewardVisuals(lotteryPanel);
+    }
+
+    private applyLotteryRewardVisuals(lotteryPanel: Node): void {
+        const content = lotteryPanel.getChildByName('Content');
+        const lotteryList = content?.getChildByName('LotteryList');
+        if (!lotteryList) return;
+
+        const slots = lotteryList.children.filter(child => /^LotteryGood-/.test(child.name) && child.active);
+        slots.forEach((slot, index) => {
+            // 隐藏旧的吞点击按钮
+            const legacyBtn = slot.getChildByName('LotteryBtn');
+            if (legacyBtn) legacyBtn.active = false;
+
+            slot.setPosition(new Vec3(index === 0 ? -160 : 160, -2, 0));
+            this.setNodeSize(slot, 286, 276);
+
+            const bg = slot.getChildByName('Bg');
+            if (bg) {
+                bg.setPosition(new Vec3(0, 0, 0));
+                this.setNodeSize(bg, 236, 236);
+                this.applySpriteAsset(bg, SHOP_POLISH_ASSETS.vaultSlot, 255);
+            }
+
+            const icon = slot.getChildByName('Icon');
+            if (icon) {
+                icon.setPosition(new Vec3(0, 24, 0));
+                this.setNodeSize(icon, 170, 170);
+                const sprite = icon.getComponent(Sprite);
+                if (sprite) {
+                    sprite.sizeMode = Sprite.SizeMode.CUSTOM;
+                }
+            }
+
+            const reward = slot.getChildByName('Reward');
+            if (reward) {
+                reward.setPosition(new Vec3(92, -66, 0));
+                this.setNodeSize(reward, 74, 42);
+                this.styleGoodsLabel(reward.getComponent(Label), 23, 30, true, new Color(255, 246, 194, 255));
+            }
+
+            const drawBtn = slot.getChildByName('DrawSingleBtn') || slot.getChildByName('DrawMultBtn') || slot.getChildByName('DrawHideBtn');
+            if (drawBtn) {
+                drawBtn.setPosition(new Vec3(0, -112, 0));
+                this.setNodeSize(drawBtn, 154, 48);
+                this.applySpriteAsset(drawBtn, SHOP_POLISH_ASSETS.claimButton, 255);
+
+                const label = drawBtn.getChildByName('Label')?.getComponent(Label) || null;
+                this.styleGoodsLabel(label, 18, 24, true, new Color(255, 238, 166, 255));
+                if (label?.node) {
+                    label.node.setPosition(new Vec3(18, 1, 0));
+                    this.setNodeSize(label.node, 82, 26);
+                }
+
+                const icon = drawBtn.getChildByName('Icon');
+                if (icon) {
+                    icon.setPosition(new Vec3(-42, 0, 0));
+                    this.setNodeSize(icon, 30, 30);
+                }
+            }
+        });
+    }
+
+    private findGoodsNode(id: number): Node | null {
+        if (!this.itemList) return null;
+        const names = [`Good-0${id}`, `Good0${id}`, `Good_0${id}`];
+        for (const name of names) {
+            const found = this.itemList.getChildByName(name);
+            if (found) return found;
+        }
+        return null;
+    }
+
+    private applyGoodsNodeLayout(goodsUI: IGoodsUI, id: number): void {
+        if (!goodsUI || !goodsUI.root || !goodsUI.root.isValid) return;
+
+        // 紧凑化卡片尺寸 (236 x 300)
+        this.setNodeSize(goodsUI.root, 236, 300);
+
+        const background = goodsUI.root.getChildByName('Background');
+        if (background) {
+            this.setNodeSize(background, 236, 300);
+            this.applySpriteAsset(background, SHOP_POLISH_ASSETS.cardFrame, 255);
+        }
+
+        const iconBg = goodsUI.root.getChildByName('IconBg');
+        if (iconBg) {
+            iconBg.active = true;
+            iconBg.setPosition(new Vec3(0, 15, 0));
+            this.setNodeSize(iconBg, 120, 120);
+            this.setNodeOpacity(iconBg, 72);
+        }
+
+        const iconNode = goodsUI.root.getChildByName('Icon');
+        if (iconNode) {
+            iconNode.setPosition(new Vec3(0, 10, 0));
+            // 采用 CUSTOM 模式并再次放大 10%
+            if (goodsUI.icon) {
+                goodsUI.icon.sizeMode = Sprite.SizeMode.CUSTOM;
+                const isBigGold = id === 6; // Card 6 is "金币大包"
+                const baseSize = isBigGold ? 116 : 105;
+                this.setNodeSize(iconNode, baseSize, baseSize);
+                goodsUI.icon.node.setScale(1.0, 1.0, 1);
+            }
+        }
+
+        const amountNode = goodsUI.root.getChildByName('Amount');
+        if (amountNode) {
+            amountNode.setPosition(new Vec3(66, -60, 0));
+            this.setNodeSize(amountNode, 80, 26);
+        }
+
+        if (goodsUI.nameLabel?.node) {
+            goodsUI.nameLabel.node.setPosition(new Vec3(0, 110, 0));
+            this.setNodeSize(goodsUI.nameLabel.node, 180, 30);
+            goodsUI.nameLabel.fontSize = 22;
+            goodsUI.nameLabel.lineHeight = 26;
+        }
+
+        if (goodsUI.descLabel?.node) {
+            goodsUI.descLabel.node.active = false;
+        }
+
+        [goodsUI.freeBtnNode, goodsUI.adBtnNode, goodsUI.buyBtnNode].forEach((node) => {
+            if (!node || !node.isValid) return;
+            node.setPosition(new Vec3(0, -110, 0));
+            this.setNodeSize(node, 154, 42);
+            this.applySpriteAsset(node, SHOP_POLISH_ASSETS.claimButton, 255);
+
+            const label = node.getChildByName('Label');
+            if (label) {
+                label.setPosition(new Vec3(0, 2, 0));
+                this.setNodeSize(label, 110, 24);
+            }
+
+            const cost = node.getChildByName('Cost');
+            if (cost) {
+                cost.setPosition(new Vec3(18, 2, 0));
+                this.setNodeSize(cost, 74, 24);
+            }
+
+            const adCount = node.getChildByName('AdCount');
+            if (adCount) {
+                adCount.setPosition(new Vec3(50, 2, 0));
+                this.setNodeSize(adCount, 52, 26);
+            }
+
+            const countdown = node.getChildByName('Countdown');
+            if (countdown) {
+                countdown.setPosition(new Vec3(0, -24, 0));
+                this.setNodeSize(countdown, 118, 24);
+            }
+        });
+
+        if (goodsUI.noti && goodsUI.noti.isValid) {
+            goodsUI.noti.setPosition(new Vec3(110, 148, 0));
+            goodsUI.noti.setScale(new Vec3(0.78, 0.78, 1));
+        }
+    }
+
+    private applyGoodsIcon(goodsUI: IGoodsUI, goods: IShopGoods): void {
+        if (!goodsUI.icon || !goodsUI.icon.node || !goodsUI.icon.node.isValid) return;
+        const iconPath = SHOP_ICON_PATHS[goods.icon] || goods.icon;
+        if (!iconPath || !iconPath.includes('/')) return;
+        this.loadSpriteFrameInto(goodsUI.icon, iconPath);
+    }
+
+    private loadSpriteFrameInto(sprite: Sprite, path: string): void {
+        loadResSingleAsset(path, (asset) => {
+            if (!sprite || !sprite.node || !sprite.node.isValid || !asset) return;
+            sprite.type = Sprite.Type.SIMPLE;
+            sprite.sizeMode = Sprite.SizeMode.CUSTOM;
+            sprite.spriteFrame = asset as SpriteFrame;
+        });
+    }
+
+    private ensureChild(parent: Node, name: string, width: number, height: number): Node {
+        let node = parent.getChildByName(name);
+        if (!node) {
+            node = new Node(name);
+            parent.addChild(node);
+        }
+        this.setNodeSize(node, width, height);
+        node.setPosition(new Vec3(0, 0, 0));
+        return node;
+    }
+
+    private applySpriteAsset(node: Node, path: string, opacity = 255): void {
+        const sprite = node.getComponent(Sprite) || node.addComponent(Sprite);
+        sprite.type = Sprite.Type.SIMPLE;
+        sprite.sizeMode = Sprite.SizeMode.CUSTOM;
+        sprite.color = Color.WHITE;
+        this.setNodeOpacity(node, opacity);
+        this.loadTextureInto(sprite, path);
+    }
+
+    private loadTextureInto(sprite: Sprite, path: string): void {
+        loadResSingleAsset(path, (asset) => {
+            if (!sprite || !sprite.node || !sprite.node.isValid || !asset) return;
+            const spriteFrame = new SpriteFrame();
+            spriteFrame.texture = asset as Texture2D;
+            sprite.type = Sprite.Type.SIMPLE;
+            sprite.sizeMode = Sprite.SizeMode.CUSTOM;
+            sprite.spriteFrame = spriteFrame;
+        }, Texture2D);
+    }
+
+    private setNodeSize(node: Node | null, width: number, height: number): void {
+        if (!node) return;
+        const transform = node.getComponent(UITransform) || node.addComponent(UITransform);
+        transform.setContentSize(width, height);
+    }
+
+    private setNodeOpacity(node: Node | null, opacity: number): void {
+        if (!node) return;
+        const uiOpacity = node.getComponent(UIOpacity) || node.addComponent(UIOpacity);
+        uiOpacity.opacity = opacity;
+    }
+
+    private applyGoodsVisualStyle(goodsUI: IGoodsUI): void {
+        this.styleGoodsLabel(goodsUI.nameLabel, 23, 29, true, new Color(246, 253, 255, 255));
+        this.styleGoodsLabel(goodsUI.descLabel, 16, 21, false, new Color(163, 207, 232, 235));
+        this.styleGoodsLabel(goodsUI.amountLabel, 20, 25, true, new Color(246, 253, 255, 255));
+        this.styleGoodsLabel(goodsUI.freeBtnLabel, 22, 27, true, new Color(255, 246, 194, 255));
+        this.styleGoodsLabel(goodsUI.adBtnLabel, 20, 25, true, new Color(255, 246, 194, 255));
+        this.styleGoodsLabel(goodsUI.adCountLabel, 18, 23, true, new Color(255, 221, 116, 255));
+        this.styleGoodsLabel(goodsUI.countdownLabel, 18, 23, true, new Color(255, 221, 116, 255));
+        this.styleGoodsLabel(goodsUI.costLabel, 20, 25, true, new Color(255, 246, 194, 255));
+    }
+
+    private styleGoodsLabel(label: Label | null, fontSize: number, lineHeight: number, bold: boolean, color: Color): void {
+        if (!label) return;
+        label.fontSize = fontSize;
+        label.lineHeight = lineHeight;
+        label.isBold = bold;
+        label.color = color;
+        label.overflow = Label.Overflow.SHRINK;
+        label.horizontalAlign = Label.HorizontalAlign.CENTER;
+        label.verticalAlign = Label.VerticalAlign.CENTER;
+        label.enableOutline = true;
+        label.outlineColor = new Color(0, 0, 0, 190);
+        label.outlineWidth = bold ? 2 : 1;
+    }
+
+    /**
+     * 更新按钮可见性 - 三个按钮互斥
+     */
+    private updateButtonsVisibility(goodsUI: IGoodsUI, goods: IShopGoods, state: any): void {
+        // 重置所有按钮显示状态
+        if (goodsUI.freeBtnNode) goodsUI.freeBtnNode.active = false;
+        if (goodsUI.adBtnNode) goodsUI.adBtnNode.active = false;
+        if (goodsUI.buyBtnNode) goodsUI.buyBtnNode.active = false;
+
+        // 根据商品类型和状态显示对应按钮
+        if (goods.id <= 3) {
+            // 前3个商品：免费+广告商品
+            if (goods.freeAvailable && !state.freeUsed) {
+                // 免费可用且未使用：显示免费按钮
+                if (goodsUI.freeBtnNode) goodsUI.freeBtnNode.active = true;
+            } else if (goods.adAvailable) {
+                // 免费已使用或不可用：显示广告按钮
+                if (goodsUI.adBtnNode) goodsUI.adBtnNode.active = true;
+            }
+        } else {
+            // 后3个商品：只显示购买按钮
+            if (goodsUI.buyBtnNode) goodsUI.buyBtnNode.active = true;
+        }
+
+    }
+
+    /**
+     * 更新免费按钮
+     */
+    private updateFreeButton(goodsUI: IGoodsUI, goods: IShopGoods, state: any): void {
+        if (!goodsUI.freeBtn || !goodsUI.freeBtnNode) return;
+
+        // 处理所有商品的Noti图标显示/隐藏
+        if (goodsUI.noti) {
+            // 只有前3个商品且免费可用且未使用时才显示Noti
+            const shouldShowNoti = goods.id <= 3 && goods.freeAvailable && !state.freeUsed;
+            goodsUI.noti.active = shouldShowNoti;
+
+            if (shouldShowNoti) {
+                this.startBreathAnimation(goodsUI.noti);
+            } else {
+                this.stopBreathAnimation(goodsUI.noti);
+            }
+        }
+
+        // 只处理前3个商品的免费按钮
+        if (goods.id <= 3) {
+            // 控制免费按钮显示/隐藏
+            const shouldShowFreeBtn = goods.freeAvailable && !state.freeUsed;
+            goodsUI.freeBtnNode.active = shouldShowFreeBtn;
+
+            if (shouldShowFreeBtn) {
+                // 按钮交互状态
+                goodsUI.freeBtn.interactable = true;
+
+                // 按钮文本
+                if (goodsUI.freeBtnLabel) {
+                    goodsUI.freeBtnLabel.string = '免费';
+                }
+
+                // 按钮颜色
+                const sprite = goodsUI.freeBtnNode.getComponent(Sprite);
+                if (sprite) {
+                    sprite.color = Color.WHITE;
+                }
+            }
+        } else {
+            // 后3个商品：确保免费按钮隐藏
+            goodsUI.freeBtnNode.active = false;
+        }
+    }
+
+
+    // 呼吸动画方法
+    private startBreathAnimation(node: Node): void {
+        // 停止之前的动画
+        this.stopBreathAnimation(node);
+
+        // 呼吸动画：缩放和透明度变化
+        tween(node)
+            .repeatForever(
+                tween(node)
+                    .to(0.8, { scale: new Vec3(1.2, 1.2, 1) })
+                    .to(0.8, { scale: new Vec3(0.7, 0.7, 1) })
+            )
+            .start();
+    }
+
+    private stopBreathAnimation(node: Node): void {
+        tween(node).stop();
+        // 恢复到原始状态
+        node.setScale(new Vec3(1, 1, 1));
+    }
+
+    /**
+     * 更新广告按钮, 确保广告按钮在前3个商品且免费已用时显示
+     */
+    private updateAdButton(goodsUI: IGoodsUI, goods: IShopGoods, state: any, id: number): void {
+        if (!goodsUI.adBtn || !goodsUI.adBtnNode || !goods.adAvailable) return;
+
+        // 只处理前3个商品
+        if (goods.id <= 3) {
+            // 控制广告按钮显示/隐藏：免费已用或不可用时显示广告按钮
+            const showAdBtn = !goods.freeAvailable || state.freeUsed;
+            goodsUI.adBtnNode.active = showAdBtn;
+
+            if (!showAdBtn) return; // 不显示则不更新状态
+
+            const remainingCount = this.shopManager!.getAdRemainingCount(id);
+            const isInCooldown = state.countdown > 0;
+
+            // 使用AdManager检查是否可以展示广告
+            const adKey = 'shop_goods_ad';
+            const uniqueAdKey = `shop_goods_${id}`;
+            const canShowAd = AdManager.canShowAd(uniqueAdKey, adKey);
+
+            // 广告按钮交互状态 - 结合本地状态和AdManager状态
+            goodsUI.adBtn.interactable = remainingCount > 0 && !isInCooldown && canShowAd.can;
+
+            // 更新广告次数显示 - 格式为 "x[剩余次数]"
+            if (goodsUI.adCountLabel) {
+                goodsUI.adCountLabel.node.active = remainingCount > 0 && !isInCooldown;
+                goodsUI.adCountLabel.string = `x${remainingCount}`;
+            } else {
+                console.warn(`[ShopUI] 商品${goods.id} adCountLabel未找到`);
+            }
+
+            // 更新按钮文本
+            if (goodsUI.adBtnLabel) {
+                goodsUI.adBtnLabel.node.active = remainingCount > 0 && !isInCooldown;
+                goodsUI.adBtnLabel.string = '广告领取';
+
+                // 如果AdManager检查不通过，显示原因
+                if (!canShowAd.can && canShowAd.reason) {
+                    goodsUI.adBtnLabel.string = canShowAd.reason.includes('次数已用完') ? '次数用完' :
+                        canShowAd.reason.includes('间隔不足') ? '冷却中' : '广告领取';
+                }
+            }
+
+            // 更新倒计时显示
+            if (goodsUI.countdownLabel) {
+                if (isInCooldown && remainingCount > 0) { // 只有还有次数且冷却时才显示倒计时
+                    const timeStr = this.shopManager!.formatTime(state.countdown);
+                    goodsUI.countdownLabel.string = timeStr;
+                    goodsUI.countdownLabel.node.active = true;
+                } else {
+                    goodsUI.countdownLabel.node.active = false;
+                }
+            }
+
+            // 更新按钮颜色
+            const sprite = goodsUI.adBtnNode.getComponent(Sprite);
+            if (sprite) {
+                if (remainingCount <= 0 || (isInCooldown && remainingCount > 0) || !canShowAd.can) {
+                    sprite.color = Color.GRAY;
+                } else {
+                    sprite.color = Color.WHITE;
+                }
+            }
+        } else {
+            // 后3个商品：隐藏广告按钮
+            goodsUI.adBtnNode.active = false;
+        }
+    }
+
+    /**
+     * 更新购买按钮
+     */
+    private updateBuyButton(goodsUI: IGoodsUI, goods: IShopGoods): void {
+        if (!goodsUI.buyBtn || !goodsUI.costLabel) return;
+
+        // 更新花费显示
+        if (goodsUI.costLabel && goods.cost) {
+            goodsUI.costLabel.string = `${goods.cost}`;
+        }
+
+        // 检查宝石是否足够
+        const hasEnoughGems = CDM.hasEnoughCurrency(
+            CurrencyType.Gem,
+            goods.cost || 0
+        );
+
+        // 设置购买按钮交互状态
+        goodsUI.buyBtn.interactable = hasEnoughGems;
+
+        // 视觉反馈
+        const sprite = goodsUI.buyBtnNode.getComponent(Sprite);
+        if (sprite) {
+            sprite.color = hasEnoughGems ? Color.WHITE : Color.GRAY;
+        }
+    }
+
+    /**
+     * 更新倒计时显示
+     */
+    private updateCountdowns(): void {
+        if (!this.shopManager) return;
+
+        for (let i = 1; i <= 3; i++) {
+            const goodsUI = this.goodsUIs.get(i);
+            if (!goodsUI) continue;
+
+            const state = this.shopManager.getGoodsState(i);
+            if (!state) continue;
+
+            // 更新倒计时显示
+            if (state.countdown > 0 && goodsUI.countdownLabel) {
+                const timeStr = this.shopManager.formatTime(state.countdown);
+                goodsUI.countdownLabel.string = timeStr;
+
+                // 倒计时结束时更新按钮状态
+                if (state.countdown === 0) {
+                    this.updateGoodsUI(i);
+                }
+            }
+        }
+    }
+
+    /**
+     * 播放飞行动画
+     */
+    private playFlyAnimation(goodsId: number, type: string): void {
+
+        try {
+            const goodsUI = this.goodsUIs.get(goodsId);
+            if (!goodsUI || !this.hudNode) {
+                console.warn(`[ShopUI] 无法播放动画 - goodsUI或hudNode为空`);
+                return;
+            }
+
+            const goodsList = this.shopManager?.getGoodsList();
+            const goods = goodsList?.find(g => g.id === goodsId);
+            if (!goods) {
+                console.warn(`[ShopUI] 未找到商品${goodsId}`);
+                return;
+            }
+
+            // 获取目标HUD位置
+            let targetHud: Node | null = null;
+            switch (goods.currencyType) {
+                case CurrencyType.Gold:
+                    targetHud = this.hudNode.getChildByName('Gold');
+                    break;
+                case CurrencyType.Gem:
+                    targetHud = this.hudNode.getChildByName('Gem');
+                    break;
+                case CurrencyType.Stamina:
+                    targetHud = this.hudNode.getChildByName('Stamina');
+                    break;
+            }
+
+            if (!targetHud) {
+                console.warn(`[ShopUI] 未找到对应HUD节点: ${goods.currencyType}`);
+                return;
+            }
+
+            // 获取起始位置（从商品图标位置开始）
+            const startNode = goodsUI.root.getChildByName('Icon') || goodsUI.root;
+
+            // 创建飞行动画
+            this.createFlyIcons(startNode, targetHud, goods.currencyType, goods.amount);
+        } catch (err) {
+            console.error("playFlyAnimation error: ", err);
+        }
+    }
+
+
+    /**
+     * 创建飞行图标
+     */
+    private createFlyIcons(startNode: Node, targetNode: Node, currencyType: CurrencyType, amount: number): void {
+        // 根据数量调整图标数量
+        const iconCount = Math.min(8, Math.ceil(amount));
+
+        // 获取世界坐标
+        const startWorldPos = startNode.getWorldPosition();
+        const targetWorldPos = targetNode.getWorldPosition();
+
+        // 获取场景根节点
+        const scene = director.getScene();
+        if (!scene) {
+            console.warn('[ShopUI] 无法获取场景，无法创建飞行动画');
+            return;
+        }
+
+        // 找到场景中的Canvas或其他合适的父节点
+        let parentNode = scene.getChildByName('Canvas') || scene;
+
+        for (let i = 0; i < iconCount; i++) {
+            const flyNode = new Node('FlyIcon');
+            const sprite = flyNode.addComponent(Sprite);
+
+            // 设置图标
+            let spriteFrame: SpriteFrame | null = null;
+            switch (currencyType) {
+                case CurrencyType.Gold:
+                    spriteFrame = this.flyIconGold;
+                    break;
+                case CurrencyType.Gem:
+                    spriteFrame = this.flyIconGem;
+                    break;
+                case CurrencyType.Stamina:
+                    spriteFrame = this.flyIconStamina;
+                    break;
+            }
+
+            if (spriteFrame) {
+                sprite.spriteFrame = spriteFrame;
+            } else {
+                // 创建默认图标 - 放大并调整颜色
+                const color = new Color();
+                switch (currencyType) {
+                    case CurrencyType.Gold: color.set(255, 215, 0, 255); break;
+                    case CurrencyType.Gem: color.set(0, 191, 255, 255); break;
+                    case CurrencyType.Stamina: color.set(50, 205, 50, 255); break;
+                }
+                sprite.color = color;
+            }
+
+            // 放大图标
+            flyNode.setScale(new Vec3(1.2, 1.2, 1));
+
+            // 添加到合适的父节点
+            parentNode.addChild(flyNode);
+
+            // 设置起始位置
+            flyNode.setWorldPosition(startWorldPos);
+
+            // 随机偏移
+            const offset = new Vec3(
+                Math.random() * 100 - 50,
+                Math.random() * 100 - 50,
+                0
+            );
+
+            const midPos = new Vec3(
+                startWorldPos.x + offset.x,
+                startWorldPos.y + offset.y,
+                0
+            );
+
+            // 飞行动画 - 使用世界坐标
+            tween(flyNode)
+                .delay(i * 0.05)
+                .to(0.2, { worldPosition: midPos })
+                .to(0.6, { worldPosition: targetWorldPos })
+                .call(() => {
+                    if (flyNode && flyNode.isValid) {
+                        flyNode.destroy();
+                    }
+                })
+                .start();
+        }
+    }
+
+    /**
+     * 播放音效
+     */
+    private playSound(soundKey: string): void {
+        try {
+            // 根据soundKey映射到对应的音效路径
+            let soundPath = '';
+            switch (soundKey) {
+                case 'click':
+                    soundPath = 'audio/effect/click';
+                    // soundPath = 'audio/effect/click';
+                    break;
+                case 'claim':
+                    soundPath = 'audio/effect/coin';
+                    // soundPath = 'audio/effect/claim';
+                    break;
+                case 'purchase':
+                    soundPath = 'audio/effect/coin';
+                    // soundPath = 'audio/effect/purchase';
+                    break;
+                case 'ad_start':
+                    // soundPath = 'audio/effect/ad_start';
+                    soundPath = 'audio/effect/coin';
+                    break;
+                default:
+                    soundPath = 'audio/effect/coin';
+            }
+
+            // 使用AudioManager播放音效
+            APM.playEffect(soundPath);
+
+        } catch (error) {
+            console.warn(`播放音效失败: ${soundKey}`, error);
+        }
+    }
+
+    /**
+     * 创建开发环境重置按钮
+     */
+    private createDevResetButton(): void {
+        // 避免重复创建
+        if (this.node.getChildByName('DevResetBtn')) return;
+
+        const resetBtn = new Node('DevResetBtn');
+        const button = resetBtn.addComponent(Button);
+        const label = resetBtn.addComponent(Label);
+
+        label.string = '重置商店';
+        label.fontSize = 16;
+        label.lineHeight = 20;
+        label.color = Color.RED;
+
+        // 设置为绝对定位，但不修改预制体原有布局
+        resetBtn.setParent(this.node);
+        // 放在左上角，不影响其他元素
+        resetBtn.setPosition(new Vec3(-280, 180, 0));
+
+        // 按钮点击事件
+        button.node.on(Button.EventType.CLICK, () => {
+            if (this.shopManager) {
+                this.shopManager.manualReset();
+                this.updateAllGoodsImmediate();
+                console.log('[ShopUI] 开发环境：商店已重置');
+            }
+        });
+
+    }
+
+    /**
+     * 事件监听
+     */
+    private setupEventListeners(): void {
+        if (!gameBus) return;
+
+        // 保存回调引用以便后续移除
+        this.eventCallbacks.shopDataUpdated = this.onShopDataUpdated.bind(this);
+        this.eventCallbacks.currencyChanged = this.onCurrencyChanged.bind(this);
+        this.eventCallbacks.goodsClaimed = this.onGoodsClaimed.bind(this);
+        this.eventCallbacks.goodsPurchased = this.onGoodsPurchased.bind(this);
+
+        gameBus.on(SIGNAL_TYPES.SHOP_DATA_UPDATED, this.eventCallbacks.shopDataUpdated);
+        gameBus.on(SIGNAL_TYPES.CURRENCY_CHANGED, this.eventCallbacks.currencyChanged);
+        gameBus.on(SIGNAL_TYPES.SHOP_GOODS_CLAIMED, this.eventCallbacks.goodsClaimed);
+        gameBus.on(SIGNAL_TYPES.SHOP_GOODS_PURCHASED, this.eventCallbacks.goodsPurchased);
+    }
+
+    private onShopDataUpdated(): void {
+        if (this.shopManager && this.isInitialized) {
+            this.updateAllGoodsImmediate();
+        }
+    }
+
+    private onCurrencyChanged(event: any): void {
+        if (event.type === CurrencyType.Gem && this.isInitialized) {
+            for (let i = 4; i <= 6; i++) {
+                this.updateGoodsUI(i);
+            }
+        }
+    }
+
+    private onGoodsClaimed(event: any): void {
+        const { id, claimType, currencyType, amount } = event;
+
+        // 显示成功提示
+        const goodsList = this.shopManager?.getGoodsList();
+        const goods = goodsList?.find(g => g.id === id);
+        if (goods) {
+            const typeName = goods.currencyType === CurrencyType.Gold ? '金币' :
+                goods.currencyType === CurrencyType.Gem ? '宝石' : '体力';
+            this.showToast(`获得${goods.amount}${typeName}`, 1.5);
+        }
+
+        // 如果是广告领取，播放飞行动画
+        if (claimType === 'ad') {
+            this.playFlyAnimation(id, 'ad');
+            // 播放领取音效
+            this.playSound('claim');
+        }
+
+        // 更新UI
+        this.updateGoodsUI(id);
+    }
+
+    private onGoodsPurchased(event: any): void {
+        const { id } = event;
+
+        const goodsList = this.shopManager?.getGoodsList();
+        const goods = goodsList?.find(g => g.id === id);
+        if (goods) {
+            const typeName = goods.currencyType === CurrencyType.Gold ? '金币' :
+                goods.currencyType === CurrencyType.Gem ? '宝石' : '体力';
+            this.showToast(`购买成功，获得${goods.amount}${typeName}`, 1.5);
+        }
+    }
+
+    /**
+     * 移除所有按钮事件
+     */
+    private removeAllButtonEvents(): void {
+        try {
+            const ids = Array.from(this.goodsUIs.keys());
+            for (const id of ids) {
+                const goodsUI = this.goodsUIs.get(id);
+                if (goodsUI) {
+                    this.removeButtonEvents(id, goodsUI);
+                }
+            }
+        } catch (error) {
+            console.warn('[ShopUI] 移除所有按钮事件失败:', error);
+        }
+    }
+
+    protected onDestroy(): void {
+        console.log('[ShopUI] 开始销毁');
+
+        // 清除定时器
+        if (this.updateInterval) {
+            clearInterval(this.updateInterval);
+            this.updateInterval = null;
+        }
+
+        // 移除游戏事件监听
+        if (gameBus) {
+            if (this.eventCallbacks.shopDataUpdated) {
+                gameBus.off(SIGNAL_TYPES.SHOP_DATA_UPDATED, this.eventCallbacks.shopDataUpdated);
+            }
+            if (this.eventCallbacks.currencyChanged) {
+                gameBus.off(SIGNAL_TYPES.CURRENCY_CHANGED, this.eventCallbacks.currencyChanged);
+            }
+            if (this.eventCallbacks.goodsClaimed) {
+                gameBus.off(SIGNAL_TYPES.SHOP_GOODS_CLAIMED, this.eventCallbacks.goodsClaimed);
+            }
+            if (this.eventCallbacks.goodsPurchased) {
+                gameBus.off(SIGNAL_TYPES.SHOP_GOODS_PURCHASED, this.eventCallbacks.goodsPurchased);
+            }
+
+            // 清空事件回调引用
+            this.eventCallbacks = {};
+        }
+
+        // 移除所有按钮事件
+        this.removeAllButtonEvents();
+
+        // 清除所有引用
+        this.goodsUIs.clear();
+        this.shopManager = null;
+
+        console.log('[ShopUI] 销毁完成');
+    }
+
+    // 添加showToast方法
+    private showToast(message: string, duration: number = 2): void {
+        ToastPanel.show(message, duration);
+    }
+}

@@ -1,0 +1,127 @@
+{
+  "version": "1.0.0",
+  "storeItems": [
+    {
+      "id": "coin_small",
+      "type": "discount",
+      "name": "store.item.coin_small.name",
+      "desc": "store.item.coin_small.desc",
+      "icon": "coin01",
+      "getType": [
+        "ad"
+      ],
+      "price": [],
+      "limit": 99,
+      "adCooldown": 5,
+      "reward": [
+        {
+          "type": "gold",
+          "amount": 50
+        }
+      ]
+    },
+    {
+      "id": "coin_medium",
+      "type": "discount",
+      "name": "store.item.coin_medium.name",
+      "desc": "store.item.coin_medium.desc",
+      "icon": "coin02",
+      "getType": [
+        "exchange"
+      ],
+      "price": [
+        {
+          "type": "gem",
+          "amount": 10
+        }
+      ],
+      "limit": 999,
+      "reward": [
+        {
+          "type": "gold",
+          "amount": 100
+        }
+      ]
+    },
+    {
+      "id": "coin_large",
+      "type": "discount",
+      "name": "store.item.coin_large.name",
+      "desc": "store.item.coin_large.desc",
+      "icon": "coin03",
+      "getType": [
+        "exchange"
+      ],
+      "price": [
+        {
+          "type": "gem",
+          "amount": 18
+        }
+      ],
+      "limit": 999,
+      "reward": [
+        {
+          "type": "gold",
+          "amount": 200
+        }
+      ]
+    },
+    {
+      "id": "gem_small",
+      "type": "discount",
+      "name": "store.item.gem_small.name",
+      "desc": "store.item.gem_small.desc",
+      "icon": "gem",
+      "getType": [
+        "ad"
+      ],
+      "price": [],
+      "limit": 20,
+      "adCooldown": 5,
+      "reward": [
+        {
+          "type": "gem",
+          "amount": 10
+        }
+      ]
+    },
+    {
+      "id": "gem_medium",
+      "type": "discount",
+      "name": "store.item.coin_ad.name",
+      "desc": "store.item.coin_ad.desc",
+      "icon": "res-gem01",
+      "getType": [
+        "ad"
+      ],
+      "price": [],
+      "limit": 10,
+      "adCooldown": 9,
+      "reward": [
+        {
+          "type": "gem",
+          "amount": 20
+        }
+      ]
+    },
+    {
+      "id": "gem_large",
+      "type": "discount",
+      "name": "store.item.coin_recharge.name",
+      "desc": "store.item.coin_recharge.desc",
+      "icon": "res-gem02",
+      "getType": [
+        "ad"
+      ],
+      "price": [],
+      "limit": 5,
+      "adCooldown": 9,
+      "reward": [
+        {
+          "type": "gem",
+          "amount": 30
+        }
+      ]
+    }
+  ]
+}

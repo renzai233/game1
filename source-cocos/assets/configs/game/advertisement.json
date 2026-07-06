@@ -1,0 +1,61 @@
+{
+  "adConfigs": {
+    "talent_get": {
+      "key": "talent_get",
+      "maxPerDay": 0,
+      "maxTotal": 0,
+      "minInterval": 30,
+      "rewardType": "talent"
+    },
+    "revive": {
+      "key": "revive",
+      "maxPerDay": 0,
+      "maxTotal": 0,
+      "minInterval": 0,
+      "rewardType": "revive"
+    },
+    "lottery": {
+      "key": "lottery",
+      "maxPerDay": 5,
+      "maxTotal": 0,
+      "minInterval": 60,
+      "rewardType": "lottery"
+    },
+    "speed_boost": {
+      "key": "speed_boost",
+      "maxPerDay": 5,
+      "maxTotal": 0,
+      "minInterval": 300,
+      "rewardType": "speed_boost",
+      "maxSpeedScale": 3
+    },
+    "damage_boost": {
+      "key": "damage_boost",
+      "maxPerDay": 5,
+      "maxTotal": 0,
+      "minInterval": 300,
+      "rewardType": "damage_boost"
+    },
+    "store_coin_free": {
+      "key": "store_coin_free",
+      "maxPerDay": 5,
+      "maxTotal": 0,
+      "minInterval": 300,
+      "rewardType": "coin"
+    },
+    "store_gem_free": {
+      "key": "store_gem_free",
+      "maxPerDay": 99,
+      "maxTotal": 0,
+      "minInterval": 600,
+      "rewardType": "gem"
+    },
+    "skill_get_all": {
+      "key": "skill_get_all",
+      "maxPerDay": 0,
+      "maxTotal": 0,
+      "minInterval": 0,
+      "rewardType": "skill_all"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "key": "FLY",
+    "name": "fly",
+    "desc": "飞行"
+  },
+  {
+    "id": 2,
+    "key": "IMMEDIATE_EXPLOSION",
+    "name": "immediate_explosion",
+    "desc": "立即爆炸"
+  },
+  {
+    "id": 3,
+    "key": "PIERCE",
+    "name": "pierce",
+    "desc": "穿透"
+  },
+  {
+    "id": 4,
+    "key": "PIERCE_EXPLOSION",
+    "name": "pierce_explosion",
+    "desc": "穿透后爆炸"
+  },
+  {
+    "id": 5,
+    "key": "LASER",
+    "name": "laser",
+    "desc": "激光类"
+  }
+]
